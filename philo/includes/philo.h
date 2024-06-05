@@ -23,6 +23,12 @@
 # include <sys/types.h>
 # include <unistd.h>
 
+typedef struct s_philo_thread
+{
+	pthread_t	thread;
+	int			id;
+}				t_philo_thread;
+
 typedef struct s_philo_table
 {
 	bool	table_assigned;
@@ -32,7 +38,9 @@ typedef struct s_philo_table
 	int		time_to_eat;
 	int		time_to_sleep;
 	int		number_of_meals;
+	t_philo_thread *philos;
 }			t_philo_table;
+
 
 //////////////////////				UTILS 			////////////////////////////
 //////////////////////		CHECK AND ASSIGN 		////////////////////////////
