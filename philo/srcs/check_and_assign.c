@@ -6,7 +6,7 @@
 /*   By: mbernard <mbernard@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 13:22:26 by mbernard          #+#    #+#             */
-/*   Updated: 2024/06/05 13:22:26 by mbernard         ###   ########.fr       */
+/*   Updated: 2024/06/05 13:57:00 by mbernard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	assign_arguments_to_philo_table(t_philo_table *philo_table,
 	}
 }
 
-bool	check_philos_number(int num_of_philos)
+static bool	check_philos_number(int num_of_philos)
 {
 	if (num_of_philos == 0 || num_of_philos == 1)
 	{
