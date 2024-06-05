@@ -17,7 +17,7 @@ MKDIR = mkdir -p
 RMDIR = rm -rf
 
 # ---------------------------------- Sources --------------------------------- #
-SRCS = philo utils
+SRCS = philo utils check_and_assign
 SRCS_WITH_DIR = $(addprefix ${SRCS_DIR}, ${SRCS}))
 
 # ---------------------------------- Repertories ----------------------------- #

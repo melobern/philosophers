@@ -10,38 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "philo.h"
-
-static int	ft_skip_white_spaces(const char *str)
-{
-	int	x;
-
-	x = 0;
-	while ((str[x] > 8 && str[x] < 14) || str[x] == 32)
-		x++;
-	return (x);
-}
-
-int	ft_atol_int(const char *str)
-{
-	long	i;
-	long	nb;
-
-	nb = 0;
-	i = ft_skip_white_spaces(str);
-	if (str[i] && (str[i] == '+' || str[i] == '-'))
-		i++;
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		nb = nb * 10 + (str[i] - '0');
-		i++;
-		if (nb > INT_MAX || nb < INT_MIN)
-			return (-2);
-	}
-	if (str[0] && str[0] == '-')
-		return (-1);
-	return ((int)nb);
-}
 
 //
 //void	clear_data(t_data	*data)
