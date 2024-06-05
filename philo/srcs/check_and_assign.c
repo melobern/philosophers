@@ -38,6 +38,13 @@ static int	ft_atol_int(const char *str)
 		if (nb > INT_MAX || nb < INT_MIN)
 			return (-2);
 	}
+	while (str[i])
+	{
+		if ((str[i] < '0' || str[i] > '9')
+			&& !((str[i] > 8 && str[i] < 14) || str[i] == 32))
+			return (-3);
+		i++;
+	}
 	if (str[0] && str[0] == '-')
 		return (-1);
 	return ((int)nb);
@@ -92,6 +99,8 @@ void	check_arguments_and_assign(char **av, t_philo_table *philo_table)
 				write(2, "Error: arguments must be positive integers\n", 43);
 			if (atol_value == -2)
 				write(2, "Error: overflow in arguments\n", 29);
+			if (atol_value == -3)
+				write(2, "Error: arguments must be integers\n", 35);
 			return ;
 		}
 		assign_arguments_to_philo_table(philo_table, atol_value, i);
