@@ -66,6 +66,14 @@ void check_arguments_and_assign(char **av, t_philo_table *philo_table)
 			write(2, "Error: overflow in arguments\n", 29);
 			return ;
 		}
+		if (i == 1 && atol_value < 2)
+		{
+			if (atol_value == 0)
+				write(2, "Error: number of philosopher should be superior to 0\n", 53);
+			else if (atol_value == 1)
+				write(2, "0 1 died\n", 9);
+			return ;
+		}
 		assign_arguments_to_philo_table(philo_table, atol_value, i);
 		i++;
 	}
