@@ -30,5 +30,7 @@ int	main(int ac, char **av)
 	printf("time_to_sleep: %d\n", philo_table.time_to_sleep);
 	if (philo_table.meals_defined)
 		printf("number_of_meals: %d\n", philo_table.number_of_meals);
+//	init_philo_table(&philo_table);
+//	launch_philo_threads(&philo_table);
 	return (0);
 }
