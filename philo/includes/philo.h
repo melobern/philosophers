@@ -23,6 +23,10 @@
 # include <sys/types.h>
 # include <unistd.h>
 
+# ifndef PHILO_200_ERROR
+#  define PHILO_200_ERROR "Error: number of philosophers should be inferior to 200\n"
+# endif
+
 typedef struct s_philo_thread
 {
 	pthread_t	thread;

@@ -40,8 +40,8 @@ static int	ft_atol_int(const char *str)
 	}
 	while (str[i])
 	{
-		if ((str[i] < '0' || str[i] > '9')
-			&& !((str[i] > 8 && str[i] < 14) || str[i] == 32))
+		if ((str[i] < '0' || str[i] > '9') && !((str[i] > 8 && str[i] < 14)
+				|| str[i] == 32))
 			return (-3);
 		i++;
 	}
@@ -68,33 +68,33 @@ static void	assign_arguments_to_philo_table(t_philo_table *philo_table,
 	}
 }
 
-static bool	check_philos_number(t_philo_table *philo_table, int num_of_philos)
+static bool	check_philos_number(t_philo_table *t, int num_of_philos)
 {
-	if (num_of_philos == 0 || num_of_philos == 1)
+	if (num_of_philos >= 1 && num_of_philos <= 200
+		&& t->time_to_die > 0 && t->time_to_eat > 0 && t->time_to_sleep > 0
+		&& (t->meals_defined == false || t->number_of_meals > 0))
 	{
-		if (num_of_philos == 0)
-			write(2, "Error: number of philosophers should be superior to 0\n",54);
-		else
-			write(2, "0 1 died\n", 9);
-		return (false);
+		if (num_of_philos == 1)
+		{
+			write(1, "0 1 died\n", 9);
+			return (false);
+		}
+		return (true);
 	}
 	if (num_of_philos > 200)
-	{
-		write(2, "Error: number of philosophers should be inferior to 200\n",56);
-		return (false);
-	}
-	if (philo_table->time_to_die == 0 || philo_table->time_to_eat == 0
-		|| philo_table->time_to_sleep == 0)
-	{
-		if (philo_table->time_to_die == 0)
-			write(2, "Error: time to die should be superior to 0\n",43);
-		if (philo_table->time_to_eat == 0)
-			write(2, "Error: time to eat should be superior to 0\n", 43);
-		if (philo_table->time_to_sleep == 0)
-			write(2, "Error: time to sleep should be superior to 0\n", 45);
-		return (false);
-	}
-	return (true);
+		write(2, PHILO_200_ERROR, 56);
+	else if (num_of_philos == 0)
+		write(2, "Error: number of philosophers should be superior to 0\n",
+			54);
+	if (t->time_to_die == 0)
+		write(2, "Error: time to die should be superior to 0\n", 43);
+	if (t->time_to_eat == 0)
+		write(2, "Error: time to eat should be superior to 0\n", 43);
+	if (t->time_to_sleep == 0)
+		write(2, "Error: time to sleep should be superior to 0\n", 45);
+	if (t->meals_defined && t->number_of_meals == 0)
+		write(2, "Error: number of meals should be superior to 0\n", 47);
+	return (false);
 }
 
 void	check_arguments_and_assign(char **av, t_philo_table *philo_table)
