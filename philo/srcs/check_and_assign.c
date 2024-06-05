@@ -68,15 +68,30 @@ static void	assign_arguments_to_philo_table(t_philo_table *philo_table,
 	}
 }
 
-static bool	check_philos_number(int num_of_philos)
+static bool	check_philos_number(t_philo_table *philo_table, int num_of_philos)
 {
 	if (num_of_philos == 0 || num_of_philos == 1)
 	{
 		if (num_of_philos == 0)
-			write(2, "Error: number of philosopher should be superior to 0\n",
-				53);
+			write(2, "Error: number of philosophers should be superior to 0\n",54);
 		else
 			write(2, "0 1 died\n", 9);
+		return (false);
+	}
+	if (num_of_philos > 200)
+	{
+		write(2, "Error: number of philosophers should be inferior to 200\n",56);
+		return (false);
+	}
+	if (philo_table->time_to_die == 0 || philo_table->time_to_eat == 0
+		|| philo_table->time_to_sleep == 0)
+	{
+		if (philo_table->time_to_die == 0)
+			write(2, "Error: time to die should be superior to 0\n",43);
+		if (philo_table->time_to_eat == 0)
+			write(2, "Error: time to eat should be superior to 0\n", 43);
+		if (philo_table->time_to_sleep == 0)
+			write(2, "Error: time to sleep should be superior to 0\n", 45);
 		return (false);
 	}
 	return (true);
@@ -106,7 +121,7 @@ void	check_arguments_and_assign(char **av, t_philo_table *philo_table)
 		assign_arguments_to_philo_table(philo_table, atol_value, i);
 		i++;
 	}
-	if (check_philos_number(philo_table->num_of_philos) == false)
+	if (check_philos_number(philo_table, philo_table->num_of_philos) == false)
 		return ;
 	philo_table->table_assigned = true;
 }
