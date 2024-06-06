@@ -40,8 +40,8 @@ static int	ft_atol_int(const char *str)
 	}
 	while (str[i])
 	{
-		if ((str[i] < '0' || str[i] > '9') && !((str[i] > 8 && str[i] < 14)
-				|| str[i] == 32))
+		if ((str[i] < '0' || str[i] > '9')
+			&& !((str[i] > 8 && str[i] < 14) || str[i] == 32))
 			return (-3);
 		i++;
 	}
@@ -50,21 +50,20 @@ static int	ft_atol_int(const char *str)
 	return ((int)nb);
 }
 
-static void	assign_arguments_to_philo_table(t_philo_table *philo_table,
-		int value, int var)
+static void	assign_arguments_to_philo_table(t_philo_table *p, int num, int var)
 {
 	if (var == 1)
-		philo_table->num_of_philos = value;
+		p->num_of_philos = num;
 	else if (var == 2)
-		philo_table->time_to_die = value;
+		p->time_to_die = num;
 	else if (var == 3)
-		philo_table->time_to_eat = value;
+		p->time_to_eat = num;
 	else if (var == 4)
-		philo_table->time_to_sleep = value;
+		p->time_to_sleep = num;
 	else if (var == 5)
 	{
-		philo_table->number_of_meals = value;
-		philo_table->meals_defined = true;
+		p->number_of_meals = num;
+		p->meals_defined = true;
 	}
 }
 
@@ -97,14 +96,13 @@ static bool	check_philos_number(t_philo_table *t, int num_of_philos)
 	return (false);
 }
 
-void	check_arguments_and_assign(char **av, t_philo_table *philo_table)
+bool	check_arguments_and_assign(char **av, t_philo_table *p)
 {
 	int	i;
 	int	atol_value;
 
 	i = 1;
-	philo_table->table_assigned = false;
-	philo_table->meals_defined = false;
+	p->meals_defined = false;
 	while (av[i])
 	{
 		atol_value = ft_atol_int(av[i]);
@@ -116,12 +114,13 @@ void	check_arguments_and_assign(char **av, t_philo_table *philo_table)
 				write(2, "Error: overflow in arguments\n", 29);
 			if (atol_value == -3)
 				write(2, "Error: arguments must be integers\n", 35);
-			return ;
+			return (false);
 		}
-		assign_arguments_to_philo_table(philo_table, atol_value, i);
+		assign_arguments_to_philo_table(p, atol_value, i);
 		i++;
 	}
-	if (check_philos_number(philo_table, philo_table->num_of_philos) == false)
-		return ;
-	philo_table->table_assigned = true;
+	if (check_philos_number(p, p->num_of_philos) == false)
+		return (false);
+	p->a_philo_has_died = false;
+	return (true);
 }
