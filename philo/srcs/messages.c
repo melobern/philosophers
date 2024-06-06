@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   routine.c                                          :+:      :+:    :+:   */
+/*   messages.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbernard <mbernard@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/06 08:44:55 by mbernard          #+#    #+#             */
-/*   Updated: 2024/06/06 08:44:55 by mbernard         ###   ########.fr       */
+/*   Created: 2024/06/06 13:19:55 by mbernard          #+#    #+#             */
+/*   Updated: 2024/06/06 13:19:55 by mbernard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*routine(void *arg)
+void	print_message(t_philo_table *table, t_philo_thread *philo, char *message)
 {
-	t_philo_thread	*philo;
+	unsigned int	time;
 
-	philo = (t_philo_thread *)arg;
-	printf("philo id: %d\n", philo->id);
-	while (philo->table->dinner_started == false)
-		;
-	philo->table->start_time = get_time_in_ms();
-	return (NULL);
+	time = get_time_in_ms();
+	pthread_mutex_lock(&table->write_mutex);
+	printf("%u %d %s\n", time - table->start_time, philo->id, message);
+	pthread_mutex_unlock(&table->write_mutex);
 }
