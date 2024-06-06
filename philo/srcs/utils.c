@@ -48,7 +48,11 @@
 //		ft_exit(data);
 //	return (1);
 //}
-
+/*
+ *
+ * Pair prend fourchette droite
+ * Impair prend fourchette gauche
+ * */
 void	*ft_calloc(size_t nmemb, size_t size)
 {
 	void	*copy;
@@ -71,7 +75,6 @@ u_int64_t	get_time_in_ms(void)
 //		return (error("gettimeofday() FAILURE\n", NULL));
 	return ((tv.tv_sec * (u_int64_t)1000) + (tv.tv_usec / 1000));
 }
-
 
 int	ft_usleep(useconds_t time)
 {

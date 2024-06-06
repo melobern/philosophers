@@ -75,7 +75,9 @@ static bool	check_philos_number(t_philo_table *t, int num_of_philos)
 	{
 		if (num_of_philos == 1)
 		{
-			write(1, "0 1 died\n", 9);
+			printf("%lu 1 has taken a fork\n", get_time_in_ms());
+			ft_usleep(t->time_to_die);
+			printf("%lu 1 died\n", get_time_in_ms());
 			return (false);
 		}
 		return (true);
