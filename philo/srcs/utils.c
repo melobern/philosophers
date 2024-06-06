@@ -49,7 +49,7 @@
 //	return (1);
 //}
 
-u_int64_t	get_time(void)
+u_int64_t	get_time_in_ms(void)
 {
 	struct timeval	tv;
 
