@@ -49,6 +49,19 @@
 //	return (1);
 //}
 
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	void	*copy;
+
+	if (nmemb && size && ((nmemb * size) / nmemb != size))
+		return (NULL);
+	copy = malloc(nmemb * size);
+	if (!(copy))
+		return (NULL);
+	memset(copy, 0, size);
+	return (copy);
+}
+
 u_int64_t	get_time_in_ms(void)
 {
 	struct timeval	tv;
@@ -64,8 +77,8 @@ int	ft_usleep(useconds_t time)
 {
 	u_int64_t	start;
 
-	start = get_time();
-	while ((get_time() - start) < time)
+	start = get_time_in_ms();
+	while ((get_time_in_ms() - start) < time)
 		usleep(time / 10);
 	return(0);
 }

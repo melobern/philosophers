@@ -84,6 +84,7 @@ typedef struct s_philo_table
 void				check_arguments_and_assign(char **av,
 						t_philo_table *philo_table);
 //////////////////////		UTILS						////////////////////////
+void	*ft_calloc(size_t nmemb, size_t size);
 int					ft_usleep(useconds_t time);
 u_int64_t			get_time_in_ms(void);
 //////////////////////		ROUTINE 				////////////////////////////
