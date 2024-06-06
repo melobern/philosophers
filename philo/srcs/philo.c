@@ -11,14 +11,14 @@
 /* ************************************************************************** */
 
 #include "philo.h"
-//
+
 //static void destroy_philo_table(t_philo_table *philo_table)
 //{
 //	// destroy_threads(philo_table);
 //	if (philo_table->philos)
 //		free(philo_table->philos);
 //}
-
+//
 //static bool init_philo_table(t_philo_table *philo_table)
 //{
 //	philo_table->philos = malloc(sizeof(t_philo_thread) * philo_table->num_of_philos);
@@ -30,7 +30,7 @@
 //	for (int i = 0; i < philo_table->num_of_philos; i++)
 //	{
 //		philo_table->philos[i].id = i + 1;
-//		if (pthread_create(&philo_table->philos[i].thread, NULL, &philo_routine, &philo_table->philos[i]))
+//		if (pthread_create(&philo_table->philos[i].thread, NULL, &routine, &philo_table->philos[i]))
 //		{
 //			write(2, "Error: pthread_create failed\n", 30);
 //			destroy_philo_table(philo_table);
@@ -62,5 +62,6 @@ int	main(int ac, char **av)
 //		return (1);
 //	init_mutex(&philo_table);
 //	launch_philo_threads(&philo_table);
+//	destroy_philo_table(&philo_table);
 	return (0);
 }
