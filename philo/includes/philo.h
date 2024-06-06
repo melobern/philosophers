@@ -24,34 +24,55 @@
 # include <unistd.h>
 
 # ifndef PHILO_200_ERROR
-#  define PHILO_200_ERROR "Error: number of philosophers should be inferior to 200\n"
+#  define PHILO_200_ERROR \
+	"Error: number of philosophers should be inferior to 200\n"
+# endif
+
+# ifndef FORK
+#  define FORK " has taken a fork\n"
+# endif
+
+# ifndef EAT
+#  define EAT " is eating\n"
+# endif
+
+# ifndef THINK
+#  define THINK " is thinking\n"
+# endif
+
+# ifndef SLEEP
+#  define SLEEP " is sleeping\n"
+# endif
+
+# ifndef DIED
+#  define DIED " died\n"
 # endif
 
 typedef struct s_philo_thread
 {
-	pthread_t	thread;
-	int			id;
-}				t_philo_thread;
+	pthread_t		thread;
+	int				id;
+}					t_philo_thread;
 
 typedef struct s_philo_table
 {
-	bool	table_assigned;
-	bool	meals_defined;
-	int		num_of_philos;
-	int		time_to_die;
-	int		time_to_eat;
-	int		time_to_sleep;
-	int		number_of_meals;
-	t_philo_thread *philos;
-}			t_philo_table;
+	bool			table_assigned;
+	bool			meals_defined;
+	int				num_of_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				number_of_meals;
+	t_philo_thread	*philos;
+}					t_philo_table;
 
-
-//////////////////////				UTILS 			////////////////////////////
 //////////////////////		CHECK AND ASSIGN 		////////////////////////////
-void		check_arguments_and_assign(char **av, t_philo_table *philo_table);
-
-// int	ft_atol_int(const char *str);
-// int	ft_usleep(useconds_t time);
-// u_int64_t	get_time(void);
+void				check_arguments_and_assign(char **av,
+						t_philo_table *philo_table);
+//////////////////////		UTILS						////////////////////////
+int					ft_usleep(useconds_t time);
+u_int64_t			get_time(void);
+//////////////////////		ROUTINE 				////////////////////////////
+void				*routine(void *arg);
 
 #endif // PHILO_H
