@@ -14,26 +14,28 @@
 
 static void	destroy_philo_table(t_philo_table *philo_table)
 {
-	int i;
-
-	i = 0;
-	while (i < philo_table->num_of_philos)
-	{
-		pthread_join(philo_table->philos[i].thread, NULL);
-		pthread_mutex_destroy(&philo_table->philos[i].mutex);
-		i++;
-	}
+//	int i;
+//
+//	i = 0;
+//	while (i < philo_table->num_of_philos)
+//	{
+//		pthread_join(philo_table->philos[i].thread, NULL);
+//		pthread_mutex_destroy(&philo_table->philos[i].mutex);
+//		i++;
+//	}
 	// destroy_threads(philo_table);
-	if (philo_table->philos)
-		free(philo_table->philos);
+
+	free(philo_table->philos);
 }
 
 static bool	init_philo_table(t_philo_table *philo_table)
 {
 	int	i;
+	unsigned int	time;
 
 	i = 0;
-	philo_table->philos = malloc(sizeof(t_philo_thread) * philo_table->num_of_philos);
+	time = get_time_in_ms();
+	philo_table->philos = ft_calloc(philo_table->num_of_philos, sizeof(t_philo_thread));
 	if (!philo_table->philos)
 	{
 		write(2, "Error: malloc failed at init_philo_table\n", 41);
@@ -45,7 +47,7 @@ static bool	init_philo_table(t_philo_table *philo_table)
 		philo_table->philos[i].is_dead = false;
 		philo_table->philos[i].is_eating = false;
 		philo_table->philos[i].meals_eaten = 0;
-		philo_table->philos[i].last_meal = get_time_in_ms();
+		philo_table->philos[i].last_meal = time;
 		i++;
 	}
 	return (true);
@@ -76,6 +78,7 @@ int	main(int ac, char **av)
 	Print_to_erase(&philo_table);
 	if (init_philo_table(&philo_table) == false)
 		return (1);
+
 //	init_mutex(&philo_table);
 //	launch_philo_threads(&philo_table);
 /*
@@ -87,7 +90,6 @@ int	main(int ac, char **av)
 		}
 		pthread_mutex_init(&philo_table->philos[i].mutex, NULL);
 */
- */
-//	destroy_philo_table(&philo_table);
+	destroy_philo_table(&philo_table);
 	return (0);
 }
