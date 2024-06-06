@@ -17,7 +17,7 @@ MKDIR = mkdir -p
 RMDIR = rm -rf
 
 # ---------------------------------- Sources --------------------------------- #
-SRCS = philo utils check_and_assign routine messages
+SRCS = philo init utils check_and_assign routine messages
 SRCS_WITH_DIR = $(addprefix ${SRCS_DIR}, ${SRCS}))
 
 # ---------------------------------- Repertories ----------------------------- #

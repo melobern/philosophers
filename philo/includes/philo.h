@@ -108,5 +108,7 @@ u_int64_t			get_time_in_ms(void);
 void				*routine(void *arg);
 //////////////////////		MESSAGES 				////////////////////////////
 void	print_message(t_philo_table *table, t_philo_thread *philo, char *message);
+//////////////////////		INIT	 				////////////////////////////
+bool	init_philo_table(t_philo_table *table);
 
 #endif // PHILO_H

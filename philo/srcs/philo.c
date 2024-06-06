@@ -28,43 +28,6 @@ static void	destroy_philo_table(t_philo_table *philo_table)
 	free(philo_table->philos);
 }
 
-static bool	init_philo_table(t_philo_table *table)
-{
-	int	i;
-	unsigned int	time;
-
-	i = 0;
-	time = get_time_in_ms();
-	table->a_philo_has_died = false;
-	table->philos = ft_calloc(table->num_of_philos, sizeof(t_philo_thread));
-	if (!table->philos)
-	{
-		write(2, "Error: malloc failed at init_philo_table\n", 41);
-		return (false);
-	}
-	while (i < table->num_of_philos)
-	{
-		table->philos[i].id = i + 1;
-		table->philos[i].is_eating = false;
-		table->philos[i].meals_eaten = 0;
-		table->philos[i].last_meal = time;
-		table->philos[i].is_dead = &(table->a_philo_has_died);
-		table->philos[i].write_mutex = &(table->write_mutex);
-		if (i < table->num_of_philos - 1)
-			table->philos[i].right_fork = &(table->philos[i + 1].left_fork);
-		else
-			table->philos[i].right_fork = &(table->philos[0].left_fork);
-		if (i < table->num_of_philos - 1)
-			table->philos[i].right_fork_taken = &(table->philos[i + 1].left_fork_taken);
-		else
-			table->philos[i].right_fork_taken = &(table->philos[0].left_fork_taken);
-		table->philos[i].dinner_started = &(table->dinner_started);
-		printf("philo id: %d\n", table->philos[i].id);
-		i++;
-	}
-	return (true);
-}
-
 static void	Print_to_erase(t_philo_table *philo_table)
 {
 	printf("num_of_philos: %d\n", philo_table->num_of_philos);
