@@ -66,23 +66,25 @@ typedef struct s_philo_thread
 	u_int64_t		last_meal;
 //	bool			lock;
 	pthread_mutex_t	mutex;
+	pthread_mutex_t	left_fork;
+	pthread_mutex_t	right_fork;
 }					t_philo_thread;
 
 typedef struct s_philo_table
 {
-	bool			table_assigned;
 	bool			meals_defined;
+	bool			a_philo_has_died;
 	int				num_of_philos;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_meals;
+	pthread_mutex_t	*fork;
 	t_philo_thread	*philos;
 }					t_philo_table;
 
 //////////////////////		CHECK AND ASSIGN 		////////////////////////////
-void				check_arguments_and_assign(char **av,
-						t_philo_table *philo_table);
+bool				check_arguments_and_assign(char **av, t_philo_table *p);
 //////////////////////		UTILS						////////////////////////
 void	*ft_calloc(size_t nmemb, size_t size);
 int					ft_usleep(useconds_t time);

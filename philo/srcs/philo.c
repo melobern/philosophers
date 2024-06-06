@@ -72,8 +72,7 @@ int	main(int ac, char **av)
 		write(2, WRONG_NUMBER_OF_ARGUMENTS, 188);
 		return (1);
 	}
-	check_arguments_and_assign(av, &philo_table);
-	if (!philo_table.table_assigned)
+	if (check_arguments_and_assign(av, &philo_table) == false)
 		return (1);
 	Print_to_erase(&philo_table);
 	if (init_philo_table(&philo_table) == false)
