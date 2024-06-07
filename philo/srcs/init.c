@@ -6,7 +6,7 @@
 /*   By: mbernard <mbernard@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:57:26 by mbernard          #+#    #+#             */
-/*   Updated: 2024/06/06 19:10:13 by mbernard         ###   ########.fr       */
+/*   Updated: 2024/06/07 08:31:29 by mbernard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	assign_table(t_philo_table *t, int i, unsigned int time)
 	t->philos[i].is_dead = &(t->a_philo_has_died);
 	t->philos[i].write_mutex = &(t->write_mutex);
 	t->philos[i].dinner_started = &(t->dinner_started);
+	t->philos[i].left_fork_taken = false;
 	if (i < t->num_of_philos - 1)
 	{
 		t->philos[i].right_fork = &(t->philos[i + 1].left_fork);

@@ -12,12 +12,12 @@
 
 CC = cc
 NAME = philo
-CFLAGS = -Wall -Wextra -Werror -MMD -MP -g -pthread # -fsanitize=pthread
+CFLAGS = -Wall -Wextra -Werror -MMD -MP -g -pthread -fsanitize=thread
 MKDIR = mkdir -p
 RMDIR = rm -rf
 
 # ---------------------------------- Sources --------------------------------- #
-SRCS = philo init utils check_and_assign routine messages
+SRCS = philo init utils check_and_assign routine messages destroy
 SRCS_WITH_DIR = $(addprefix ${SRCS_DIR}, ${SRCS}))
 
 # ---------------------------------- Repertories ----------------------------- #

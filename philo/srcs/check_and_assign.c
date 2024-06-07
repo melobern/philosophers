@@ -55,45 +55,43 @@ static void	assign_arguments_to_philo_table(t_philo_table *p, int num, int var)
 	if (var == 1)
 		p->num_of_philos = num;
 	else if (var == 2)
-		p->time_to_die = num;
+		p->die_time = num;
 	else if (var == 3)
-		p->time_to_eat = num;
+		p->eat_time = num;
 	else if (var == 4)
-		p->time_to_sleep = num;
+		p->sleep_time = num;
 	else if (var == 5)
 	{
-		p->number_of_meals = num;
+		p->num_of_meals = num;
 		p->meals_defined = true;
 	}
 }
 
 static bool	check_philos_number(t_philo_table *t, int num_of_philos)
 {
-	if (num_of_philos >= 1 && num_of_philos <= 200
-		&& t->time_to_die > 59 && t->time_to_eat > 59 && t->time_to_sleep > 59
-		&& (t->meals_defined == false || t->number_of_meals > 0))
-	{
-		if (num_of_philos == 1)
-		{
-			printf("%lu 1 has taken a fork\n", get_time_in_ms());
-			ft_usleep(t->time_to_die);
-			printf("%lu 1 died\n", get_time_in_ms());
-			return (false);
-		}
+	if (num_of_philos > 1 && num_of_philos <= 200
+		&& t->die_time > 59 && t->eat_time > 59 && t->sleep_time > 59
+		&& (t->meals_defined == 0 || t->num_of_meals > 0))
 		return (true);
+	if (num_of_philos == 1 && t->die_time > 59 && t->eat_time > 59
+		&& t->sleep_time > 59 && (t->meals_defined == 0 || t->num_of_meals > 0))
+	{
+		printf("%lu 1 has taken a fork\n", get_time_in_ms());
+		ft_usleep(t->die_time);
+		printf("%lu 1 died\n", get_time_in_ms());
+		return (false);
 	}
 	if (num_of_philos > 200)
 		write(2, PHILO_200_ERROR, 56);
 	else if (num_of_philos == 0)
-		write(2, "Error: number of philosophers should be superior to 0\n",
-			54);
-	if (t->time_to_die < 60)
+		write(2, "Error: number of philosophers should be superior to 0\n", 54);
+	if (t->die_time < 60)
 		write(2, "Error: time to die should be superior to 59\n", 44);
-	if (t->time_to_eat < 60)
+	if (t->eat_time < 60)
 		write(2, "Error: time to eat should be superior to 59\n", 44);
-	if (t->time_to_sleep < 60)
+	if (t->sleep_time < 60)
 		write(2, "Error: time to sleep should be superior to 59\n", 46);
-	if (t->meals_defined && t->number_of_meals == 0)
+	if (t->meals_defined && t->num_of_meals == 0)
 		write(2, "Error: number of meals should be superior to 0\n", 47);
 	return (false);
 }
