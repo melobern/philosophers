@@ -6,7 +6,7 @@
 /*   By: mbernard <mbernard@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:56:09 by mbernard          #+#    #+#             */
-/*   Updated: 2024/06/06 13:49:46 by mbernard         ###   ########.fr       */
+/*   Updated: 2024/06/07 08:41:43 by mbernard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 #  define WRONG_NUMBER_OF_ARGUMENTS \
 	"Error: wrong number of arguments\n\
 Correct format should contains 5 or 6 arguments :\n\
-number_of_philosophers	time_to_die	time_to_eat	time_to_sleep\t\
+number_of_philosophers\tdie_time\teat_time\tsleep_time\t\
 [number_of_times_each_philosopher_must_eat]\n"
 # endif
 
@@ -88,10 +88,10 @@ typedef struct s_philo_table
 	bool			meals_defined;
 	bool			a_philo_has_died;
 	int				num_of_philos;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				number_of_meals;
+	int				die_time;
+	int				eat_time;
+	int				sleep_time;
+	int				num_of_meals;
 	bool			dinner_started;
 	unsigned int 	start_time;
 	pthread_mutex_t	write_mutex;
@@ -107,8 +107,9 @@ u_int64_t			get_time_in_ms(void);
 //////////////////////		ROUTINE 				////////////////////////////
 void				*routine(void *arg);
 //////////////////////		MESSAGES 				////////////////////////////
-void	print_message(t_philo_table *table, t_philo_thread *philo, char *message);
+void	print_message(t_philo_table *table, t_philo_thread *philo, char *msg);
 //////////////////////		INIT	 				////////////////////////////
 bool	init_philo_table(t_philo_table *table);
-
+//////////////////////		DESTROY	 				////////////////////////////
+void	destroy_philo_table(t_philo_table *philo_table);
 #endif // PHILO_H

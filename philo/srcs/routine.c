@@ -18,8 +18,8 @@ void	*routine(void *arg)
 
 	philo = (t_philo_thread *)arg;
 	printf("philo id: %d\n", philo->id);
-	while (philo->table->dinner_started == false)
+	while (philo->dinner_started == false)
 		;
-	philo->table->start_time = get_time_in_ms();
+	//philo->start_time = get_time_in_ms();
 	return (NULL);
 }
