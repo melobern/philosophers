@@ -20,7 +20,8 @@ void	*routine(void *arg)
 	while (philo->dinner_started == false)
 		;
 	while (*(philo->dead_detected) == false
-		&& (philo->meals_defined == false || philo->meals_eaten < philo->num_of_meals))
+		&& (philo->meals_defined == false
+			|| philo->meals_eaten < philo->num_of_meals))
 	{
 //		if (philo->id % 2 == 0)
 //			eat(philo);

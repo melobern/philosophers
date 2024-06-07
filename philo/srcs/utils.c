@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "philo.h"
 
 //
@@ -41,18 +40,19 @@
 //}
 //
 //
-//int	error(char *str, t_data *data)
-//{
-//	printf("%s\n", str);
-//	if (data)
-//		ft_exit(data);
-//	return (1);
-//}
+int	error(char *str, t_philo_table *table)
+{
+	printf("%s\n", str);
+	if (table)
+		destroy_philo_table(table);
+	return (1);
+}
 /*
  *
  * Pair prend fourchette droite
  * Impair prend fourchette gauche
  * */
+
 void	*ft_calloc(size_t nmemb, size_t size)
 {
 	void	*copy;
@@ -71,8 +71,7 @@ u_int64_t	get_time_in_ms(void)
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL))
-		perror("gettimeofday() FAILURE\n");
-//		return (error("gettimeofday() FAILURE\n", NULL));
+		return (error("gettimeofday() FAILURE\n", NULL));
 	return ((tv.tv_sec * (u_int64_t)1000) + (tv.tv_usec / 1000));
 }
 
@@ -83,5 +82,5 @@ int	ft_usleep(useconds_t time)
 	start = get_time_in_ms();
 	while ((get_time_in_ms() - start) < time)
 		usleep(time / 10);
-	return(0);
+	return (0);
 }

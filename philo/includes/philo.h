@@ -60,7 +60,8 @@ number_of_philosophers\tdie_time\teat_time\tsleep_time\t\
 Check the code of Philo for the following things and ask for an explanation.
 Check if there is one thread per philosopher.
 Check there's only one fork per philosopher.
-Check if there is a mutex per fork and that it's used to check the fork value and/or change it.
+Check if there is a mutex per fork and
+that it's used to check the fork value and/or change it.
 Check the output should never produce a scrambled view.
 Check how the death of a philosopher is checked and if there is a mutex
 to protect that a philosopher dies and start eating at the same time.
@@ -73,12 +74,12 @@ typedef struct s_philo_thread
 	bool			is_eating;
 	int				meals_eaten;
 	u_int64_t		last_meal;
-	bool 			left_fork_taken;
+	bool			left_fork_taken;
 	bool			*right_fork_taken;
-	pthread_mutex_t death_mutex;
+	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	left_fork;
 	pthread_mutex_t	*right_fork;
-	pthread_mutex_t *write_mutex;
+	pthread_mutex_t	*write_mutex;
 	bool			is_dead;
 	bool			*dead_detected;
 	bool			*dinner_started;
@@ -97,7 +98,7 @@ typedef struct s_philo_table
 	int				sleep_time;
 	int				num_of_meals;
 	bool			dinner_started;
-	unsigned long 	start_time;
+	unsigned long	start_time;
 	pthread_mutex_t	write_mutex;
 	t_philo_thread	*philos;
 }					t_philo_table;
@@ -111,9 +112,9 @@ u_int64_t			get_time_in_ms(void);
 //////////////////////		ROUTINE 				////////////////////////////
 void				*routine(void *arg);
 //////////////////////		MESSAGES 				////////////////////////////
-void	print_message(t_philo_thread *philo, char *msg);
+void				print_message(t_philo_thread *philo, char *msg);
 //////////////////////		INIT	 				////////////////////////////
-bool	init_philo_table(t_philo_table *table);
+bool				init_philo_table(t_philo_table *table);
 //////////////////////		DESTROY	 				////////////////////////////
-void	destroy_philo_table(t_philo_table *philo_table);
+void				destroy_philo_table(t_philo_table *philo_table);
 #endif // PHILO_H
