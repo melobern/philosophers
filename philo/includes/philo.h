@@ -84,20 +84,20 @@ typedef struct s_philo_thread
 	bool			*dinner_started;
 	bool			*meals_defined;
 	int				num_of_meals;
-	unsigned int	start_time;
+	unsigned long	*start_time;
 }					t_philo_thread;
 
 typedef struct s_philo_table
 {
 	bool			meals_defined;
-	bool			a_philo_has_died;
+	bool			dead_detected;
 	int				num_of_philos;
 	int				die_time;
 	int				eat_time;
 	int				sleep_time;
 	int				num_of_meals;
 	bool			dinner_started;
-	unsigned int 	start_time;
+	unsigned long 	start_time;
 	pthread_mutex_t	write_mutex;
 	t_philo_thread	*philos;
 }					t_philo_table;
@@ -111,7 +111,7 @@ u_int64_t			get_time_in_ms(void);
 //////////////////////		ROUTINE 				////////////////////////////
 void				*routine(void *arg);
 //////////////////////		MESSAGES 				////////////////////////////
-void	print_message(t_philo_table *table, t_philo_thread *philo, char *msg);
+void	print_message(t_philo_thread *philo, char *msg);
 //////////////////////		INIT	 				////////////////////////////
 bool	init_philo_table(t_philo_table *table);
 //////////////////////		DESTROY	 				////////////////////////////

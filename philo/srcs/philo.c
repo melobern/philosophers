@@ -29,14 +29,13 @@ static void	launch_diner(t_philo_table *philo_table)
 	i = 0;
 
 	philo_table->dinner_started = false;
+	philo_table->dead_detected = false;
 	while (i < philo_table->num_of_philos)
 	{
 		if (pthread_create(&philo_table->philos[i].thread, NULL, &routine, &philo_table->philos[i]))
 		{
 			write(2, "Error: pthread_create failed\n", 30);
-//			destroy_philo_table(philo_table);
 			return ;
-//			return (false);
 		}
 		i++;
 	}
@@ -77,21 +76,17 @@ int	main(int ac, char **av)
 	}
 	if (check_arguments_and_assign(av, &philo_table) == false)
 		return (1);
-//	Print_to_erase(&philo_table);
+	if (philo_table.num_of_philos == 1)
+	{
+		write(1, "000000 1 has taken a fork\n", 26);
+		ft_usleep(philo_table.die_time);
+		printf("000%u 1 died\n", philo_table.die_time + 1);
+		return (0);
+	}
 	if (init_philo_table(&philo_table) == false)
 		return (1);
 	if (init_mutex(&philo_table))
 		launch_diner(&philo_table);
-//	launch_philo_threads(&philo_table);
-/*
- * 		if (pthread_create(&philo_table->philos[i].thread, NULL, &routine, &philo_table->philos[i]))
-		{
-			write(2, "Error: pthread_create failed\n", 30);
-			destroy_philo_table(philo_table);
-			return (false);
-		}
-		pthread_mutex_init(&philo_table->philos[i].mutex, NULL);
-*/
 	destroy_philo_table(&philo_table);
 	return (0);
 }
