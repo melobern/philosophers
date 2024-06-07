@@ -77,7 +77,7 @@ int	main(int ac, char **av)
 	}
 	if (check_arguments_and_assign(av, &philo_table) == false)
 		return (1);
-	//Print_to_erase(&philo_table);
+//	Print_to_erase(&philo_table);
 	if (init_philo_table(&philo_table) == false)
 		return (1);
 	if (init_mutex(&philo_table))

@@ -84,7 +84,7 @@ typedef struct s_philo_thread
 	bool			*dinner_started;
 	bool			*meals_defined;
 	int				num_of_meals;
-	unsigned int	*start_time;
+	unsigned int	start_time;
 }					t_philo_thread;
 
 typedef struct s_philo_table
