@@ -79,8 +79,12 @@ typedef struct s_philo_thread
 	pthread_mutex_t	left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t *write_mutex;
-	bool			*is_dead;
+	bool			is_dead;
+	bool			*dead_detected;
 	bool			*dinner_started;
+	bool			*meals_defined;
+	int				num_of_meals;
+	unsigned int	*start_time;
 }					t_philo_thread;
 
 typedef struct s_philo_table

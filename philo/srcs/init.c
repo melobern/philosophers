@@ -18,9 +18,13 @@ static void	assign_table(t_philo_table *t, int i, unsigned int time)
 	t->philos[i].is_eating = false;
 	t->philos[i].meals_eaten = 0;
 	t->philos[i].last_meal = time;
-	t->philos[i].is_dead = &(t->a_philo_has_died);
+	t->philos[i].start_time = &time;
+	t->philos[i].is_dead = false;
+	t->philos[i].dead_detected = &(t->a_philo_has_died);
 	t->philos[i].write_mutex = &(t->write_mutex);
 	t->philos[i].dinner_started = &(t->dinner_started);
+	t->philos[i].meals_defined = &(t->meals_defined);
+	t->philos[i].num_of_meals = t->num_of_meals;
 	t->philos[i].left_fork_taken = false;
 	if (i < t->num_of_philos - 1)
 	{
