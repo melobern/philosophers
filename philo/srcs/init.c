@@ -18,9 +18,9 @@ static void	assign_table(t_philo_table *t, int i, unsigned int time)
 	t->philos[i].is_eating = false;
 	t->philos[i].meals_eaten = 0;
 	t->philos[i].last_meal = time;
-	t->philos[i].start_time = time;
+	t->philos[i].start_time = &(t->start_time);
 	t->philos[i].is_dead = false;
-	t->philos[i].dead_detected = &(t->a_philo_has_died);
+	t->philos[i].dead_detected = &(t->dead_detected);
 	t->philos[i].write_mutex = &(t->write_mutex);
 	t->philos[i].dinner_started = &(t->dinner_started);
 	t->philos[i].meals_defined = &(t->meals_defined);
@@ -45,7 +45,7 @@ bool	init_philo_table(t_philo_table *table)
 
 	i = 0;
 	time = get_time_in_ms();
-	table->a_philo_has_died = false;
+	table->dead_detected = false;
 	table->philos = ft_calloc(table->num_of_philos, sizeof(t_philo_thread));
 	if (!table->philos)
 	{

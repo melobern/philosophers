@@ -12,12 +12,12 @@
 
 #include "philo.h"
 
-void	print_message(t_philo_table *table, t_philo_thread *philo, char *msg)
+void	print_message(t_philo_thread *philo, char *msg)
 {
-	unsigned int	time;
+	unsigned long	time;
 
 	time = get_time_in_ms();
-	pthread_mutex_lock(&table->write_mutex);
-	printf("%u %d %s\n", time - table->start_time, philo->id, msg);
-	pthread_mutex_unlock(&table->write_mutex);
+	pthread_mutex_lock(philo->write_mutex);
+	printf("%lu %d %s", time - *(philo->start_time), philo->id, msg);
+	pthread_mutex_unlock(philo->write_mutex);
 }

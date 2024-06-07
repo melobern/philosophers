@@ -69,18 +69,10 @@ static void	assign_arguments_to_philo_table(t_philo_table *p, int num, int var)
 
 static bool	check_philos_number(t_philo_table *t, int num_of_philos)
 {
-	if (num_of_philos > 1 && num_of_philos <= 200
+	if (num_of_philos > 0 && num_of_philos <= 200
 		&& t->die_time > 59 && t->eat_time > 59 && t->sleep_time > 59
 		&& (t->meals_defined == 0 || t->num_of_meals > 0))
 		return (true);
-	if (num_of_philos == 1 && t->die_time > 59 && t->eat_time > 59
-		&& t->sleep_time > 59 && (t->meals_defined == 0 || t->num_of_meals > 0))
-	{
-		printf("%lu 1 has taken a fork\n", get_time_in_ms());
-		ft_usleep(t->die_time);
-		printf("%lu 1 died\n", get_time_in_ms());
-		return (false);
-	}
 	if (num_of_philos > 200)
 		write(2, PHILO_200_ERROR, 56);
 	else if (num_of_philos == 0)
@@ -121,6 +113,6 @@ bool	check_arguments_and_assign(char **av, t_philo_table *p)
 	}
 	if (check_philos_number(p, p->num_of_philos) == false)
 		return (false);
-	p->a_philo_has_died = false;
+	p->dead_detected = false;
 	return (true);
 }
