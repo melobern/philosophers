@@ -27,12 +27,14 @@ static void	launch_diner(t_philo_table *philo_table)
 	int	i;
 
 	i = 0;
-
 	philo_table->dinner_started = false;
 	philo_table->dead_detected = false;
 	while (i < philo_table->num_of_philos)
 	{
-		if (pthread_create(&philo_table->philos[i].thread, NULL, &routine, &philo_table->philos[i]))
+		if (pthread_create(&philo_table->philos[i].thread,
+				NULL,
+				&routine,
+				&philo_table->philos[i]))
 		{
 			write(2, "Error: pthread_create failed\n", 30);
 			return ;
