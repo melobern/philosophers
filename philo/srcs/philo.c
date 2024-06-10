@@ -29,7 +29,7 @@ static void	launch_diner(t_table *table)
 	i = 0;
 	table->dinner_started = false;
 	table->dead_detected = false;
-	table->error_detected = true;
+	table->error_detected = false;
 	while (i < table->num_of_philos)
 	{
 		if (pthread_create(&table->philos[i].thread,
@@ -39,7 +39,7 @@ static void	launch_diner(t_table *table)
 		{
 			write(2, "Error: pthread_create failed\n", 30);
 			table->philos[i].thread_created = false;
-			table->error_detected = true;
+			*table->philos[i].error_detected = true;
 			return ;
 		}
 		table->philos[i].thread_created = true;
