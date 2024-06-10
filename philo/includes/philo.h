@@ -109,7 +109,6 @@ typedef struct s_table
 	int				meals_num;
 	unsigned long	start_time;
 	pthread_mutex_t	write_mutex;
-	pthread_mutex_t	error_mutex;
 	t_philo_thread	*philos;
 }					t_table;
 

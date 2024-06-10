@@ -39,4 +39,5 @@ void	destroy_philo_table(t_table *table)
 	}
 	pthread_mutex_destroy(&(table->write_mutex));
 	free(table->philos);
+	table->philos = NULL;
 }
