@@ -125,6 +125,11 @@ void				print_message(t_philo_thread *philo, char *msg);
 //////////////////////		INIT	 				////////////////////////////
 bool				init_philo_table(t_table *table);
 bool				init_mutex(t_table *table);
+bool				assign_bool_with_mutex(bool *var, pthread_mutex_t *mutex,
+						bool value);
+//////////////////////		MUTEX	 				////////////////////////////
+bool				mutex_lock(pthread_mutex_t *mutex);
+bool				mutex_unlock(pthread_mutex_t *mutex);
 //////////////////////		DESTROY	 				////////////////////////////
 void				destroy_philo_table(t_table *table);
 #endif // PHILO_H

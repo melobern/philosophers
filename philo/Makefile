@@ -17,7 +17,7 @@ MKDIR = mkdir -p
 RMDIR = rm -rf
 
 # ---------------------------------- Sources --------------------------------- #
-SRCS = philo init utils check_and_assign routine messages destroy
+SRCS = philo init utils check_and_assign routine messages destroy mutex
 SRCS_WITH_DIR = $(addprefix ${SRCS_DIR}, ${SRCS}))
 
 # ---------------------------------- Repertories ----------------------------- #
