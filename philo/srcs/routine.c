@@ -12,44 +12,25 @@
 
 #include "philo.h"
 
-bool	mutex_lock(pthread_mutex_t *mutex)
-{
-	if (pthread_mutex_lock(mutex))
-	{
-		write(2, "Error: mutex lock failed\n", 25);
-		return (false);
-	}
-	return (true);
-}
-
-bool	mutex_unlock(pthread_mutex_t *mutex)
-{
-	if (pthread_mutex_unlock(mutex))
-	{
-		write(2, "Error: mutex unlock failed\n", 27);
-		return (false);
-	}
-	return (true);
-}
-
-bool wait_dinner(t_philo_thread *philo, u_int64_t time)
+bool	wait_dinner(t_philo_thread *philo, u_int64_t time)
 {
 	u_int64_t	limit_time;
 
+	if (time == 1)
+		return (false);
 	while (1)
 	{
-		if (time == 1 || mutex_lock(philo->write_mutex) == false)
+		if (mutex_lock(philo->write_mutex) == false)
 			return (false);
 		if (*philo->dinner_started == true)
 		{
 			if (mutex_unlock(philo->write_mutex) == false)
 				return (false);
-			break ;
+			return (true);
 		}
 		if (*(philo->error_detected) == true)
 		{
-			if (mutex_unlock(philo->write_mutex) == false)
-				return (false);
+			mutex_unlock(philo->write_mutex);
 			return (false);
 		}
 		if (mutex_unlock(philo->write_mutex) == false)
@@ -58,7 +39,6 @@ bool wait_dinner(t_philo_thread *philo, u_int64_t time)
 		if (time + 100 < limit_time || limit_time == 1)
 			return (false);
 	}
-	return (true);
 }
 
 void	*routine(void *arg)
@@ -68,24 +48,6 @@ void	*routine(void *arg)
 	if (!arg || !wait_dinner((t_philo_thread *) arg, get_time_in_ms()))
 		return (NULL);
 	philo = (t_philo_thread *)arg;
-/*	while (1)
-	{
-		pthread_mutex_lock(philo->write_mutex);
-		if (*philo->dinner_started == true)
-		{
-			pthread_mutex_unlock(philo->write_mutex);
-			break ;
-		}
-		if (*(philo->error_detected) == true)
-		{
-			pthread_mutex_unlock(philo->write_mutex);
-			return (NULL);
-		}
-		pthread_mutex_unlock(philo->write_mutex);
-		limit_time = get_time_in_ms();
-		if (time + 100 < limit_time || limit_time == 1)
-			return (NULL);
-	}*/
 	print_message(philo, THINK);
 	while (*(philo->dead_detected) == false
 		&& (philo->meals_defined == false
