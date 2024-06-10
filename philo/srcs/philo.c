@@ -22,14 +22,28 @@
 //		printf("meals_num: %d\n", philo_table->meals_num);
 //}
 
+bool	assign_bool_with_mutex(bool *var, pthread_mutex_t *mutex, bool value)
+{
+//	return (false);
+	if (pthread_mutex_lock(mutex))
+	{
+		write(2, "Error: mutex lock failed\n", 25);
+		return (false);
+	}
+	*var = value;
+	if (pthread_mutex_unlock(mutex))
+	{
+		write(2, "Error: mutex unlock failed\n", 27);
+		return (false);
+	}
+	return (true);
+}
+
 static void	launch_diner(t_table *table)
 {
 	int	i;
 
 	i = 0;
-	table->dinner_started = false;
-	table->dead_detected = false;
-	table->error_detected = false;
 	while (i < table->num_of_philos)
 	{
 		if (pthread_create(&table->philos[i].thread,
@@ -38,14 +52,21 @@ static void	launch_diner(t_table *table)
 				&table->philos[i]))
 		{
 			write(2, "Error: pthread_create failed\n", 30);
-			table->philos[i].thread_created = false;
 			*table->philos[i].error_detected = true;
 			return ;
 		}
 		table->philos[i].thread_created = true;
 		i++;
 	}
-	table->dinner_started = true;
+//	pthread_mutex_lock(&table->write_mutex);
+	if (assign_bool_with_mutex(&table->dinner_started,
+							   &table->write_mutex,
+							   true) == false)
+		return ;
+//		*table->philos[i - 1].error_detected = true;
+//		return ;
+//	 table->dinner_started = true;
+//	pthread_mutex_unlock(&table->write_mutex);
 }
 
 int	main(int ac, char **av)

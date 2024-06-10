@@ -27,6 +27,7 @@ static void	assign_table(t_table *t, int i, unsigned int time)
 	t->philos[i].meals_defined = &(t->meals_defined);
 	t->philos[i].meals_num = t->meals_num;
 	t->philos[i].left_fork_taken = false;
+	t->philos[i].thread_created = false;
 	if (i < t->num_of_philos - 1)
 	{
 		t->philos[i].right_fork = &(t->philos[i + 1].left_fork);
@@ -47,6 +48,8 @@ bool	init_philo_table(t_table *table)
 	i = 0;
 	time = get_time_in_ms();
 	table->dead_detected = false;
+	table->dinner_started = false;
+	table->error_detected = false;
 	table->philos = ft_calloc(table->num_of_philos, sizeof(t_philo_thread));
 	if (!table->philos)
 	{
@@ -96,9 +99,9 @@ bool	init_mutex(t_table *table)
 		write(2, "Error: pthread_mutex_init of write_mutex failed\n", 48);
 		return (false);
 	}
-	if (pthread_mutex_init(&(table->error_mutex), NULL))
+	if (pthread_mutex_init(&(table->write_mutex), NULL))
 	{
-		write(2, "Error: pthread_mutex_init of error_mutex failed\n", 48);
+		write(2, "Error: pthread_mutex_init of write_mutex failed\n", 48);
 		return (false);
 	}
 	result = init_left_and_death_mutex(table);
