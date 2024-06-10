@@ -12,31 +12,31 @@
 
 #include "philo.h"
 
-static void	destroy_threads(t_table *philo_table)
+static void	destroy_threads(t_table *table)
 {
 	int	i;
 
 	i = 0;
-	while (i < philo_table->num_of_philos)
+	while (i < table->num_of_philos && table->philos[i].thread_created)
 	{
-		if (pthread_join(philo_table->philos[i].thread, NULL))
+		if (pthread_join(table->philos[i].thread, NULL))
 			write(2, "Error: pthread_join failed\n", 28);
 		i++;
 	}
 }
 
-void	destroy_philo_table(t_table *philo_table)
+void	destroy_philo_table(t_table *table)
 {
 	int	i;
 
 	i = 0;
-	destroy_threads(philo_table);
-	while (i < philo_table->num_of_philos)
+	destroy_threads(table);
+	while (i < table->num_of_philos && table->philos[i].mutex_created)
 	{
-		pthread_mutex_destroy(&(philo_table->philos[i].death_mutex));
-		pthread_mutex_destroy(&(philo_table->philos[i].left_fork));
+		pthread_mutex_destroy(&(table->philos[i].death_mutex));
+		pthread_mutex_destroy(&(table->philos[i].left_fork));
 		i++;
 	}
-	pthread_mutex_destroy(&(philo_table->write_mutex));
-	free(philo_table->philos);
+	pthread_mutex_destroy(&(table->write_mutex));
+	free(table->philos);
 }

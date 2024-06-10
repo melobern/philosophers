@@ -21,6 +21,7 @@ static void	assign_table(t_table *t, int i, unsigned int time)
 	t->philos[i].start_time = &(t->start_time);
 	t->philos[i].is_dead = false;
 	t->philos[i].dead_detected = &(t->dead_detected);
+	t->philos[i].error_detected = &(t->error_detected);
 	t->philos[i].write_mutex = &(t->write_mutex);
 	t->philos[i].dinner_started = &(t->dinner_started);
 	t->philos[i].meals_defined = &(t->meals_defined);
@@ -58,4 +59,43 @@ bool	init_philo_table(t_table *table)
 		i++;
 	}
 	return (true);
+}
+
+static bool	init_left_and_death_mutex(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->num_of_philos)
+	{
+		if (pthread_mutex_init(&(table->philos[i].death_mutex), NULL))
+		{
+			write(2, "Error: pthread_mutex_init failed\n", 34);
+			table->philos[i].mutex_created = false;
+			return (false);
+		}
+		if (pthread_mutex_init(&(table->philos[i].left_fork), NULL))
+		{
+			write(2, "Error: pthread_mutex_init failed\n", 34);
+			pthread_mutex_destroy(&(table->philos[i].death_mutex));
+			table->philos[i].mutex_created = false;
+			return (false);
+		}
+		table->philos[i].mutex_created = true;
+		i++;
+	}
+	return (true);
+}
+
+bool	init_mutex(t_table *table)
+{
+	bool	result;
+
+	if (pthread_mutex_init(&(table->write_mutex), NULL))
+	{
+		write(2, "Error: pthread_mutex_init failed\n", 34);
+		return (false);
+	}
+	result = init_left_and_death_mutex(table);
+	return (result);
 }
