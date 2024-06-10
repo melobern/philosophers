@@ -89,13 +89,8 @@ typedef struct s_philo_thread
 	bool			*dead_detected;
 	bool			*dinner_started;
 	bool			*meals_defined;
-<<<<<<< Updated upstream
-	int				num_of_meals;
-	unsigned long	*start_time;
-=======
 	int				meals_num;
-	unsigned int	start_time;
->>>>>>> Stashed changes
+	unsigned long	*start_time;
 }					t_philo_thread;
 
 typedef struct s_table
@@ -108,11 +103,7 @@ typedef struct s_table
 	int				sleep_time;
 	int				meals_num;
 	bool			dinner_started;
-<<<<<<< Updated upstream
 	unsigned long	start_time;
-=======
-	unsigned int	start_time;
->>>>>>> Stashed changes
 	pthread_mutex_t	write_mutex;
 	t_philo_thread	*philos;
 }					t_table;
@@ -126,17 +117,9 @@ u_int64_t			get_time_in_ms(void);
 //////////////////////		ROUTINE 				////////////////////////////
 void				*routine(void *arg);
 //////////////////////		MESSAGES 				////////////////////////////
-<<<<<<< Updated upstream
 void				print_message(t_philo_thread *philo, char *msg);
-//////////////////////		INIT	 				////////////////////////////
-bool				init_philo_table(t_philo_table *table);
-//////////////////////		DESTROY	 				////////////////////////////
-void				destroy_philo_table(t_philo_table *philo_table);
-=======
-void				print_msg(t_table *table, t_philo_thread *philo, char *msg);
 //////////////////////		INIT	 				////////////////////////////
 bool				init_philo_table(t_table *table);
 //////////////////////		DESTROY	 				////////////////////////////
 void				destroy_philo_table(t_table *philo_table);
->>>>>>> Stashed changes
 #endif // PHILO_H

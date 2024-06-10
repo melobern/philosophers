@@ -40,7 +40,7 @@
 //}
 //
 //
-int	error(char *str, t_philo_table *table)
+int	error(char *str, t_table *table)
 {
 	printf("%s\n", str);
 	if (table)
