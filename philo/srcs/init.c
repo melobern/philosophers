@@ -12,6 +12,20 @@
 
 #include "philo.h"
 
+static void	assign_forks(t_table *t, int i)
+{
+	if (i < t->num_of_philos - 1)
+	{
+		t->philos[i].right_fork = &(t->philos[i + 1].left_fork);
+		t->philos[i].right_fork_taken = &(t->philos[i + 1].left_fork_taken);
+	}
+	else
+	{
+		t->philos[i].right_fork = &(t->philos[0].left_fork);
+		t->philos[i].right_fork_taken = &(t->philos[0].left_fork_taken);
+	}
+}
+
 static void	assign_table(t_table *t, int i, unsigned int time)
 {
 	t->philos[i].id = i + 1;
@@ -26,18 +40,12 @@ static void	assign_table(t_table *t, int i, unsigned int time)
 	t->philos[i].dinner_started = &(t->dinner_started);
 	t->philos[i].meals_defined = &(t->meals_defined);
 	t->philos[i].meals_num = t->meals_num;
+	t->philos[i].eat_time = t->eat_time;
+	t->philos[i].sleep_time = t->sleep_time;
+	t->philos[i].die_time = t->die_time;
 	t->philos[i].left_fork_taken = false;
 	t->philos[i].thread_created = false;
-	if (i < t->num_of_philos - 1)
-	{
-		t->philos[i].right_fork = &(t->philos[i + 1].left_fork);
-		t->philos[i].right_fork_taken = &(t->philos[i + 1].left_fork_taken);
-	}
-	else
-	{
-		t->philos[i].right_fork = &(t->philos[0].left_fork);
-		t->philos[i].right_fork_taken = &(t->philos[0].left_fork_taken);
-	}
+	assign_forks(t, i);
 }
 
 bool	init_philo_table(t_table *table)
