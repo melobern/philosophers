@@ -12,17 +12,17 @@
 
 #include "philo.h"
 
-//static void	Print_to_erase(t_philo_table *philo_table)
+//static void	Print_to_erase(t_table *philo_table)
 //{
 //	printf("num_of_philos: %d\n", philo_table->num_of_philos);
 //	printf("die_time: %d\n", philo_table->die_time);
 //	printf("eat_time: %d\n", philo_table->eat_time);
 //	printf("sleep_time: %d\n", philo_table->sleep_time);
 //	if (philo_table->meals_defined)
-//		printf("num_of_meals: %d\n", philo_table->num_of_meals);
+//		printf("meals_num: %d\n", philo_table->meals_num);
 //}
 
-static void	launch_diner(t_philo_table *philo_table)
+static void	launch_diner(t_table *philo_table)
 {
 	int	i;
 
@@ -41,10 +41,11 @@ static void	launch_diner(t_philo_table *philo_table)
 		}
 		i++;
 	}
+
 	philo_table->dinner_started = true;
 }
 
-bool	init_mutex(t_philo_table *philo_table)
+bool	init_mutex(t_table *philo_table)
 {
 	int	i;
 
@@ -69,7 +70,7 @@ bool	init_mutex(t_philo_table *philo_table)
 
 int	main(int ac, char **av)
 {
-	t_philo_table	philo_table;
+	t_table	philo_table;
 
 	if (ac < 5 || ac > 6)
 	{

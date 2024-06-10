@@ -12,7 +12,11 @@
 
 #include "philo.h"
 
+<<<<<<< Updated upstream
 void	print_message(t_philo_thread *philo, char *msg)
+=======
+void	print_msg(t_table *table, t_philo_thread *philo, char *msg)
+>>>>>>> Stashed changes
 {
 	unsigned long	time;
 

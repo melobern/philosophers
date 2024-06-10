@@ -19,9 +19,20 @@ void	*routine(void *arg)
 	philo = (t_philo_thread *)arg;
 	while (philo->dinner_started == false)
 		;
+<<<<<<< Updated upstream
 	while (*(philo->dead_detected) == false
 		&& (philo->meals_defined == false
 			|| philo->meals_eaten < philo->num_of_meals))
+=======
+	pthread_mutex_lock(philo->write_mutex);
+	printf("%u %d %s", time - philo->start_time, philo->id, SLEEP);
+	pthread_mutex_unlock(philo->write_mutex);
+//	if (philo->id % 2 == 0)
+//		ft_usleep(1);
+	//philo->start_time = get_time_in_ms();
+	while (philo->dead_detected == 0
+		&& (philo->meals_defined == 0 || philo->meals_eaten < philo->meals_num))
+>>>>>>> Stashed changes
 	{
 //		if (philo->id % 2 == 0)
 //			eat(philo);

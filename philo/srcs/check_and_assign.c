@@ -50,7 +50,7 @@ static int	ft_atol_int(const char *str)
 	return ((int)nb);
 }
 
-static void	assign_arguments_to_philo_table(t_philo_table *p, int num, int var)
+static void	assign_arguments_to_philo_table(t_table *p, int num, int var)
 {
 	if (var == 1)
 		p->num_of_philos = num;
@@ -62,17 +62,28 @@ static void	assign_arguments_to_philo_table(t_philo_table *p, int num, int var)
 		p->sleep_time = num;
 	else if (var == 5)
 	{
-		p->num_of_meals = num;
+		p->meals_num = num;
 		p->meals_defined = true;
 	}
 }
 
-static bool	check_philos_number(t_philo_table *t, int num_of_philos)
+static bool	check_philos_number(t_table *t, int num_of_philos)
 {
 	if (num_of_philos > 0 && num_of_philos <= 200
 		&& t->die_time > 59 && t->eat_time > 59 && t->sleep_time > 59
-		&& (t->meals_defined == 0 || t->num_of_meals > 0))
+		&& (t->meals_defined == 0 || t->meals_num > 0))
 		return (true);
+<<<<<<< Updated upstream
+=======
+	if (num_of_philos == 1 && t->die_time > 59 && t->eat_time > 59
+		&& t->sleep_time > 59 && (t->meals_defined == 0 || t->meals_num > 0))
+	{
+		printf("%lu 1 has taken a fork\n", get_time_in_ms());
+		ft_usleep(t->die_time);
+		printf("%lu 1 died\n", get_time_in_ms());
+		return (false);
+	}
+>>>>>>> Stashed changes
 	if (num_of_philos > 200)
 		write(2, PHILO_200_ERROR, 56);
 	else if (num_of_philos == 0)
@@ -83,12 +94,12 @@ static bool	check_philos_number(t_philo_table *t, int num_of_philos)
 		write(2, "Error: time to eat should be superior to 59\n", 44);
 	if (t->sleep_time < 60)
 		write(2, "Error: time to sleep should be superior to 59\n", 46);
-	if (t->meals_defined && t->num_of_meals == 0)
+	if (t->meals_defined && t->meals_num == 0)
 		write(2, "Error: number of meals should be superior to 0\n", 47);
 	return (false);
 }
 
-bool	check_arguments_and_assign(char **av, t_philo_table *p)
+bool	check_arguments_and_assign(char **av, t_table *p)
 {
 	int	i;
 	int	atol_value;
