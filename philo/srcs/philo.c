@@ -80,9 +80,9 @@ int	main(int ac, char **av)
 		return (1);
 	if (philo_table.num_of_philos == 1)
 	{
-		write(1, "000000 1 has taken a fork\n", 26);
+		printf( "0 1 has taken a fork\n");
 		ft_usleep(philo_table.die_time);
-		printf("0000%u 1 died\n", philo_table.die_time + 1);
+		printf( "%u 1 died\n", philo_table.die_time + 1);
 		return (0);
 	}
 	if (init_philo_table(&philo_table) == false)
