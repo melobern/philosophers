@@ -92,6 +92,9 @@ typedef struct s_philo_thread
 	bool			*error_detected;
 	bool			*dinner_started;
 	bool			*meals_defined;
+	int				die_time;
+	int				eat_time;
+	int				sleep_time;
 	int				meals_num;
 	unsigned long	*start_time;
 }					t_philo_thread;

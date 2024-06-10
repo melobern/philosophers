@@ -41,6 +41,34 @@ bool	wait_dinner(t_philo_thread *philo, u_int64_t time)
 	}
 }
 
+void	eat(t_philo_thread *philo)
+{
+	if (mutex_lock(&philo->left_fork) == false)
+		return ;
+	if (philo->left_fork_taken == false && *philo->right_fork_taken == false)
+	{
+		philo->left_fork_taken = true;
+		*philo->right_fork_taken = true;
+//		if (mutex_lock(&philo->left_fork) == false)
+//			return ;
+//		if (mutex_lock(philo->right_fork) == false)
+//			return ;
+		print_message(philo, FORK);
+		print_message(philo, EAT);
+		philo->is_eating = true;
+		ft_usleep(philo->eat_time);
+		philo->last_meal = get_time_in_ms();
+//		if (mutex_unlock(&philo->left_fork) == false)
+//			return ;
+//		if (mutex_unlock(philo->right_fork) == false)
+//			return ;
+		philo->left_fork_taken = true;
+		*philo->right_fork_taken = true;
+	}
+	if (mutex_unlock( &philo->left_fork) == false)
+		return ;
+}
+
 void	*routine(void *arg)
 {
 	t_philo_thread	*philo;
@@ -48,22 +76,24 @@ void	*routine(void *arg)
 	if (!arg || !wait_dinner((t_philo_thread *) arg, get_time_in_ms()))
 		return (NULL);
 	philo = (t_philo_thread *)arg;
-	print_message(philo, THINK);
 	while (*(philo->dead_detected) == false
 		&& (philo->meals_defined == false
 			|| philo->meals_eaten < philo->meals_num))
 	{
-//		if (philo->id % 2 == 0)
-//			eat(philo);
+		if (philo->id % 2 == 0)
+			eat(philo);
 //		else
 //			eat(philo);
-		print_message(philo, SLEEP);
-		print_message(philo, FORK);
-		print_message(philo, EAT);
-		print_message(philo, THINK);
 		philo->meals_eaten++;
 		if (philo->id % 2 == 0)
 			ft_usleep(1);
 	}
 	return (NULL);
 }
+
+/*
+  		print_message(philo, SLEEP);
+		print_message(philo, FORK);
+		print_message(philo, EAT);
+		print_message(philo, THINK);
+*/
