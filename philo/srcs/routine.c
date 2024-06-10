@@ -17,8 +17,11 @@ void	*routine(void *arg)
 	t_philo_thread	*philo;
 
 	philo = (t_philo_thread *)arg;
-	while (philo->dinner_started == false)
-		;
+	while ((*philo->dinner_started) == false)
+	{
+		if (*(philo->error_detected) == true)
+			return (NULL);
+	}
 	print_message(philo, THINK);
 	while (*(philo->dead_detected) == false
 		&& (philo->meals_defined == false

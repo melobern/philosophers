@@ -22,73 +22,54 @@
 //		printf("meals_num: %d\n", philo_table->meals_num);
 //}
 
-static void	launch_diner(t_table *philo_table)
+static void	launch_diner(t_table *table)
 {
 	int	i;
 
 	i = 0;
-	philo_table->dinner_started = false;
-	philo_table->dead_detected = false;
-	while (i < philo_table->num_of_philos)
+	table->dinner_started = false;
+	table->dead_detected = false;
+	table->error_detected = true;
+	while (i < table->num_of_philos)
 	{
-		if (pthread_create(&philo_table->philos[i].thread,
+		if (pthread_create(&table->philos[i].thread,
 				NULL,
 				&routine,
-				&philo_table->philos[i]))
+				&table->philos[i]))
 		{
 			write(2, "Error: pthread_create failed\n", 30);
+			table->philos[i].thread_created = false;
+			table->error_detected = true;
 			return ;
 		}
+		table->philos[i].thread_created = true;
 		i++;
 	}
-	philo_table->dinner_started = true;
-}
-
-bool	init_mutex(t_table *philo_table)
-{
-	int	i;
-
-	i = 0;
-	if (pthread_mutex_init(&(philo_table->write_mutex), NULL))
-	{
-		write(2, "Error: pthread_mutex_init failed\n", 34);
-		return (false);
-	}
-	while (i < philo_table->num_of_philos)
-	{
-		if (pthread_mutex_init(&(philo_table->philos[i].death_mutex), NULL)
-			|| pthread_mutex_init(&(philo_table->philos[i].left_fork), NULL))
-		{
-			write(2, "Error: pthread_mutex_init failed\n", 34);
-			return (false);
-		}
-		i++;
-	}
-	return (true);
+	table->dinner_started = true;
 }
 
 int	main(int ac, char **av)
 {
-	t_table	philo_table;
+	t_table	table;
 
 	if (ac < 5 || ac > 6)
 	{
 		write(2, WRONG_NUMBER_OF_ARGUMENTS, 180);
 		return (1);
 	}
-	if (check_arguments_and_assign(av, &philo_table) == false)
+	if (check_arguments_and_assign(av, &table) == false)
 		return (1);
-	if (philo_table.num_of_philos == 1)
+	if (table.num_of_philos == 1)
 	{
-		printf( "0 1 has taken a fork\n");
-		ft_usleep(philo_table.die_time);
-		printf( "%u 1 died\n", philo_table.die_time + 1);
+		printf("0 1 has taken a fork\n");
+		ft_usleep(table.die_time);
+		printf("%u 1 died\n", table.die_time + 1);
 		return (0);
 	}
-	if (init_philo_table(&philo_table) == false)
+	if (init_philo_table(&table) == false)
 		return (1);
-	if (init_mutex(&philo_table))
-		launch_diner(&philo_table);
-	destroy_philo_table(&philo_table);
+	if (init_mutex(&table))
+		launch_diner(&table);
+	destroy_philo_table(&table);
 	return (0);
 }
