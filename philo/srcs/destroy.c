@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-static void	destroy_threads(t_philo_table *philo_table)
+static void	destroy_threads(t_table *philo_table)
 {
 	int	i;
 
@@ -25,12 +25,13 @@ static void	destroy_threads(t_philo_table *philo_table)
 	}
 }
 
-void	destroy_philo_table(t_philo_table *philo_table)
+void	destroy_philo_table(t_table *philo_table)
 {
 	int	i;
 
 	i = 0;
 	destroy_threads(philo_table);
+
 	while (i < philo_table->num_of_philos)
 	{
 		pthread_mutex_destroy(&(philo_table->philos[i].death_mutex));
