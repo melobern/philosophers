@@ -6,7 +6,7 @@
 /*   By: mbernard <mbernard@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:56:09 by mbernard          #+#    #+#             */
-/*   Updated: 2024/06/07 08:41:43 by mbernard         ###   ########.fr       */
+/*   Updated: 2024/06/10 15:47:15 by mbernard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,11 @@ typedef struct s_philo_thread
 	bool			is_eating;
 	int				meals_eaten;
 	u_int64_t		last_meal;
-	bool			left_fork_taken;
+	int				num_forks;
+	bool			l_fork_taken;
 	bool			*right_fork_taken;
 	pthread_mutex_t	death_mutex;
-	pthread_mutex_t	left_fork;
+	pthread_mutex_t	l_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*write_mutex;
 	bool			is_dead;
@@ -128,8 +129,8 @@ void				print_message(t_philo_thread *philo, char *msg);
 //////////////////////		INIT	 				////////////////////////////
 bool				init_philo_table(t_table *table);
 bool				init_mutex(t_table *table);
-bool				assign_bool_with_mutex(bool *var, pthread_mutex_t *mutex,
-						bool value);
+int 				assign_bool_mutex(bool *var, pthread_mutex_t *mutex,
+									  bool value);
 //////////////////////		MUTEX	 				////////////////////////////
 bool				mutex_lock(pthread_mutex_t *mutex);
 bool				mutex_unlock(pthread_mutex_t *mutex);
