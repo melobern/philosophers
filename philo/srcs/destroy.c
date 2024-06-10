@@ -31,7 +31,6 @@ void	destroy_philo_table(t_table *philo_table)
 
 	i = 0;
 	destroy_threads(philo_table);
-
 	while (i < philo_table->num_of_philos)
 	{
 		pthread_mutex_destroy(&(philo_table->philos[i].death_mutex));

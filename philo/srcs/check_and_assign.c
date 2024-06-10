@@ -73,17 +73,6 @@ static bool	check_philos_number(t_table *t, int num_of_philos)
 		&& t->die_time > 59 && t->eat_time > 59 && t->sleep_time > 59
 		&& (t->meals_defined == 0 || t->meals_num > 0))
 		return (true);
-<<<<<<< Updated upstream
-=======
-	if (num_of_philos == 1 && t->die_time > 59 && t->eat_time > 59
-		&& t->sleep_time > 59 && (t->meals_defined == 0 || t->meals_num > 0))
-	{
-		printf("%lu 1 has taken a fork\n", get_time_in_ms());
-		ft_usleep(t->die_time);
-		printf("%lu 1 died\n", get_time_in_ms());
-		return (false);
-	}
->>>>>>> Stashed changes
 	if (num_of_philos > 200)
 		write(2, PHILO_200_ERROR, 56);
 	else if (num_of_philos == 0)

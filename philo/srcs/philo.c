@@ -41,7 +41,6 @@ static void	launch_diner(t_table *philo_table)
 		}
 		i++;
 	}
-
 	philo_table->dinner_started = true;
 }
 
@@ -83,7 +82,7 @@ int	main(int ac, char **av)
 	{
 		write(1, "000000 1 has taken a fork\n", 26);
 		ft_usleep(philo_table.die_time);
-		printf("000%u 1 died\n", philo_table.die_time + 1);
+		printf("0000%u 1 died\n", philo_table.die_time + 1);
 		return (0);
 	}
 	if (init_philo_table(&philo_table) == false)
