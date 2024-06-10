@@ -40,13 +40,12 @@
 //}
 //
 //
-int	error(char *str, t_table *table)
-{
-	printf("%s\n", str);
-	if (table)
-		destroy_philo_table(table);
-	return (1);
-}
+//void	error(char *str, size_t str_len, t_table *table)
+//{
+//	write(2, str, str_len);
+//	if (table)
+//		destroy_philo_table(table);
+//}
 /*
  *
  * Pair prend fourchette droite
@@ -71,7 +70,10 @@ u_int64_t	get_time_in_ms(void)
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL))
-		return (error("gettimeofday() FAILURE\n", NULL));
+	{
+		write(2, "gettimeofday() FAILURE\n", 23);
+		return (1);
+	}
 	return ((tv.tv_sec * (u_int64_t)1000) + (tv.tv_usec / 1000));
 }
 
