@@ -41,9 +41,9 @@ static void	launch_diner(t_table *table)
 		table->philos[i].thread_created = true;
 		i++;
 	}
-	if (assign_bool_with_mutex(&table->dinner_started,
-			&table->write_mutex,
-			true) == false)
+	if (assign_bool_mutex(&table->dinner_started,
+						  &table->write_mutex,
+						  true) == false)
 		return ;
 }
 

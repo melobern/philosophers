@@ -16,13 +16,13 @@ static void	assign_forks(t_table *t, int i)
 {
 	if (i < t->num_of_philos - 1)
 	{
-		t->philos[i].right_fork = &(t->philos[i + 1].left_fork);
-		t->philos[i].right_fork_taken = &(t->philos[i + 1].left_fork_taken);
+		t->philos[i].right_fork = &(t->philos[i + 1].l_fork);
+		t->philos[i].right_fork_taken = &(t->philos[i + 1].l_fork_taken);
 	}
 	else
 	{
-		t->philos[i].right_fork = &(t->philos[0].left_fork);
-		t->philos[i].right_fork_taken = &(t->philos[0].left_fork_taken);
+		t->philos[i].right_fork = &(t->philos[0].l_fork);
+		t->philos[i].right_fork_taken = &(t->philos[0].l_fork_taken);
 	}
 }
 
@@ -32,6 +32,7 @@ static void	assign_table(t_table *t, int i, unsigned int time)
 	t->philos[i].is_eating = false;
 	t->philos[i].meals_eaten = 0;
 	t->philos[i].last_meal = time;
+	t->philos[i].num_forks = 0;
 	t->philos[i].start_time = &(t->start_time);
 	t->philos[i].is_dead = false;
 	t->philos[i].dead_detected = &(t->dead_detected);
@@ -43,7 +44,7 @@ static void	assign_table(t_table *t, int i, unsigned int time)
 	t->philos[i].eat_time = t->eat_time;
 	t->philos[i].sleep_time = t->sleep_time;
 	t->philos[i].die_time = t->die_time;
-	t->philos[i].left_fork_taken = false;
+	t->philos[i].l_fork_taken = false;
 	t->philos[i].thread_created = false;
 	assign_forks(t, i);
 }
@@ -85,7 +86,7 @@ static bool	init_left_and_death_mutex(t_table *table)
 			table->philos[i].mutex_created = false;
 			return (false);
 		}
-		if (pthread_mutex_init(&(table->philos[i].left_fork), NULL))
+		if (pthread_mutex_init(&(table->philos[i].l_fork), NULL))
 		{
 			write(2, "Error: pthread_mutex_init of fork_mutex failed\n", 47);
 			pthread_mutex_destroy(&(table->philos[i].death_mutex));
