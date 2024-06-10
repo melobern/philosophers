@@ -70,13 +70,13 @@ static bool	init_left_and_death_mutex(t_table *table)
 	{
 		if (pthread_mutex_init(&(table->philos[i].death_mutex), NULL))
 		{
-			write(2, "Error: pthread_mutex_init failed\n", 34);
+			write(2, "Error: pthread_mutex_init of death_mutex failed\n", 48);
 			table->philos[i].mutex_created = false;
 			return (false);
 		}
 		if (pthread_mutex_init(&(table->philos[i].left_fork), NULL))
 		{
-			write(2, "Error: pthread_mutex_init failed\n", 34);
+			write(2, "Error: pthread_mutex_init of fork_mutex failed\n", 47);
 			pthread_mutex_destroy(&(table->philos[i].death_mutex));
 			table->philos[i].mutex_created = false;
 			return (false);
@@ -93,7 +93,12 @@ bool	init_mutex(t_table *table)
 
 	if (pthread_mutex_init(&(table->write_mutex), NULL))
 	{
-		write(2, "Error: pthread_mutex_init failed\n", 34);
+		write(2, "Error: pthread_mutex_init of write_mutex failed\n", 48);
+		return (false);
+	}
+	if (pthread_mutex_init(&(table->error_mutex), NULL))
+	{
+		write(2, "Error: pthread_mutex_init of error_mutex failed\n", 48);
 		return (false);
 	}
 	result = init_left_and_death_mutex(table);
