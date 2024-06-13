@@ -84,9 +84,9 @@ typedef struct s_philo_thread
 	int				num_forks;
 	bool			l_fork_taken;
 	bool			*r_fork_taken;
-	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	l_fork;
 	pthread_mutex_t	*r_fork;
+	pthread_mutex_t	*death_mutex;
 	pthread_mutex_t	*write_mutex;
 	bool			is_dead;
 	bool			*dead_detected;
@@ -113,6 +113,7 @@ typedef struct s_table
 	int				meals_num;
 	u_int64_t		start_time;
 	pthread_mutex_t	write_mutex;
+	pthread_mutex_t	death_mutex;
 	t_philo_thread	*philos;
 }					t_table;
 
@@ -125,7 +126,7 @@ u_int64_t			get_time_in_ms(void);
 //////////////////////		ROUTINE 				////////////////////////////
 void				*routine(void *arg);
 //////////////////////		MESSAGES 				////////////////////////////
-void				print_message(t_philo_thread *philo, char *msg);
+void				print_message(t_philo_thread *philo, char *msg, bool is_dead);
 //////////////////////		INIT	 				////////////////////////////
 bool				init_philo_table(t_table *table);
 bool				init_mutex(t_table *table);
@@ -134,6 +135,8 @@ int 				assign_bool_mutex(bool *var, pthread_mutex_t *mutex,
 //////////////////////		MUTEX	 				////////////////////////////
 bool				mutex_lock(pthread_mutex_t *mutex);
 bool				mutex_unlock(pthread_mutex_t *mutex);
+bool				mutex_check_if_can_eat(t_philo_thread *p);
+
 //////////////////////		DESTROY	 				////////////////////////////
 void				destroy_philo_table(t_table *table);
 #endif // PHILO_H
