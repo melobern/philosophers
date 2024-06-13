@@ -41,12 +41,20 @@ bool	wait_dinner(t_philo_thread *philo, u_int64_t time)
 	}
 }
 
+void eating_phase(t_philo_thread *p)
+{
+	print_message(p, FORK, 0);
+	print_message(p, EAT, 0);
+	ft_usleep(p->eat_time);
+	p->last_meal = get_time_in_ms();
+	assign_bool_mutex(&p->l_fork_taken,&p->l_fork, false);
+	assign_bool_mutex(p->r_fork_taken,p->r_fork, false);
+	p->meals_eaten++;
+	p->num_forks = 0;
+}
 void	eat_left(t_philo_thread *p)
 {
-	int protect;
-//
-//	while (p->is_eating == false && *(p->dead_detected) == false
-//		   && (p->meals_defined == false || p->meals_eaten < p->meals_num))
+	int fork_is_free;
 
 	while (mutex_check_if_can_eat(p))
 	{
@@ -55,96 +63,59 @@ void	eat_left(t_philo_thread *p)
 			print_message(p, DIED, 1);
 			return ;
 		}
-		protect = assign_bool_mutex(&p->l_fork_taken,&p->l_fork, true);
-		if (protect == -1)
-			return;
-		if (protect == true)
+		fork_is_free = assign_bool_mutex(&p->l_fork_taken, &p->l_fork, true);
+		if (fork_is_free == true)
 		{
 			print_message(p, FORK, 0);
 			p->num_forks++;
 		}
-		protect = assign_bool_mutex(p->r_fork_taken, p->r_fork, true);
-		if (protect == -1)
-			return ;
-		else if (protect == true && p->num_forks == 1)
-		{
-			print_message(p, FORK, 0);
-			print_message(p, EAT, 0);
-			p->is_eating = true;
-			ft_usleep(p->eat_time);
-			p->last_meal = get_time_in_ms();
-			if (assign_bool_mutex(&p->l_fork_taken,&p->l_fork, false) == -1)
-				return ;
-			if (assign_bool_mutex(p->r_fork_taken,p->r_fork, false) == -1)
-				return ;
-			p->meals_eaten++;
-			p->is_eating = false;
-			p->num_forks = 0;
-			print_message(p, SLEEP, 0);
-			ft_usleep(p->sleep_time);
-			print_message(p, THINK, 0);
-		}
+		fork_is_free = assign_bool_mutex(p->r_fork_taken, p->r_fork, true);
+		if (fork_is_free == true && p->num_forks == 1)
+			eating_phase(p);
+		print_message(p, SLEEP, 0);
+		ft_usleep(p->sleep_time);
+		print_message(p, THINK, 0);
 	}
 }
 
-//void	eat_right(t_philo_thread *p)
-//{
-//	int protect;
-//
-////	while (p->is_eating == false && *(p->dead_detected) == false
-////		   && (p->meals_defined == false || p->meals_eaten < p->meals_num))
-//	while (mutex_check_if_can_eat(p))
-//	{
-//		if (p->last_meal + p->die_time < get_time_in_ms())
-//		{
-//			print_message(p, DIED);
-//			if (assign_bool_mutex(p->dead_detected, p->write_mutex, true))
-//				return ;
-//			p->is_dead = true;
-////			*(p->dead_detected) = true;
-//			return ;
-//		}
-//		protect = assign_bool_mutex(p->r_fork_taken,p->r_fork, true);
-//		if (protect == -1)
-//			return;
-//		if (protect == true)
-//		{
-//			print_message(p, FORK);
-//			p->num_forks++;
-//		}
-//		protect = assign_bool_mutex(&p->l_fork_taken, &p->l_fork, true);
-//		if (protect == -1)
-//			return ;
-//		else if (protect == true && p->num_forks == 1)
-//		{
-//			print_message(p, FORK);
-//			print_message(p, EAT);
-//			p->is_eating = true;
-//			ft_usleep(p->eat_time);
-//			p->last_meal = get_time_in_ms();
-//			if (assign_bool_mutex(p->r_fork_taken,
-//								  p->r_fork, false) == -1)
-//				return;
-//			if (assign_bool_mutex(&p->l_fork_taken,
-//								  &p->l_fork, false) == -1)
-//			p->meals_eaten++;
-//			p->is_eating = false;
-//			print_message(p, SLEEP);
-//			ft_usleep(p->sleep_time);
-//			print_message(p, THINK);
-//				return;
-//		}
-//	}
-//}
+void	eat_right(t_philo_thread *p)
+{
+	int fork_is_free;
+
+	while (mutex_check_if_can_eat(p))
+	{
+		if (p->last_meal + p->die_time < get_time_in_ms())
+		{
+			print_message(p, DIED, 1);
+			return ;
+		}
+		fork_is_free = assign_bool_mutex(p->r_fork_taken, p->r_fork, true);
+		if (fork_is_free == -1)
+			return;
+		if (fork_is_free == true)
+		{
+			print_message(p, FORK, 0);
+			p->num_forks++;
+		}
+		fork_is_free = assign_bool_mutex(&p->l_fork_taken, &p->l_fork, true);
+		if (fork_is_free == -1)
+			return ;
+		else if (fork_is_free == true && p->num_forks == 1)
+			eating_phase(p);
+		print_message(p, SLEEP, 0);
+		ft_usleep(p->sleep_time);
+		print_message(p, THINK, 0);
+	}
+}
 
 void	eat(t_philo_thread *philo, int id)
 {
 	if (id % 2 == 0)
 		ft_usleep(philo->eat_time / 2);
-//	if (id % 2 == 0)
-	eat_left(philo);
-//	else
-//		eat_right(philo);
+	if (id % 2 == 0)
+		eat_left(philo);
+	else
+		eat_right(philo);
 }
 
 void	*routine(void *arg)
