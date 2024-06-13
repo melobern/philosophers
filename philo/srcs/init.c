@@ -29,7 +29,7 @@ static void	assign_forks(t_table *t, int i)
 static void	assign_table(t_table *t, int i, u_int64_t time)
 {
 	t->philos[i].id = i + 1;
-	t->philos[i].is_eating = false;
+//	t->philos[i].is_eating = false;
 	t->philos[i].meals_eaten = 0;
 	t->philos[i].last_meal = time;
 	t->philos[i].num_forks = 0;

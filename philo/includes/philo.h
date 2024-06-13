@@ -60,13 +60,8 @@ number_of_philosophers\tdie_time\teat_time\tsleep_time\t\
 Check the code of Philo for the following things and ask for an explanation.
 Check if there is one thread per philosopher.
 Check there's only one fork per philosopher.
-<<<<<<< Updated upstream
 Check if there is a mutex per fork and
 that it's used to check the fork value and/or change it.
-=======
-Check if there is a mutex per fork and that it's used to
- check the fork value and/or change it.
->>>>>>> Stashed changes
 Check the output should never produce a scrambled view.
 Check how the death of a philosopher is checked and if there is a mutex
 to protect that a philosopher dies and start eating at the same time.
@@ -78,7 +73,7 @@ typedef struct s_philo_thread
 	int				id;
 	bool			thread_created;
 	bool			mutex_created;
-	bool			is_eating;
+//	bool			is_eating;
 	int				meals_eaten;
 	u_int64_t		last_meal;
 	int				num_forks;
