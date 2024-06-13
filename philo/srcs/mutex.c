@@ -53,3 +53,27 @@ int	assign_bool_mutex(bool *var, pthread_mutex_t *mutex, bool value)
 	}
 	return (flag);
 }
+
+bool	mutex_check_if_can_eat(t_philo_thread *p)
+{
+	bool flag;
+
+	flag = false;
+	if (p->is_eating == false
+		&& (p->meals_defined == false || p->meals_eaten <= p->meals_num))
+	{
+		if (pthread_mutex_lock(p->death_mutex))
+		{
+			write(2, "Error: mutex lock failed\n", 25);
+			return (false);
+		}
+		if (*(p->dead_detected) == false)
+		flag = true;
+		if (pthread_mutex_unlock(p->death_mutex))
+		{
+			write(2, "Error: mutex lock failed\n", 25);
+			return (false);
+		}
+	}
+	return (flag);
+}

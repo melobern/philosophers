@@ -33,11 +33,11 @@ void	destroy_philo_table(t_table *table)
 	destroy_threads(table);
 	while (i < table->num_of_philos && table->philos[i].mutex_created)
 	{
-		pthread_mutex_destroy(&(table->philos[i].death_mutex));
 		pthread_mutex_destroy(&(table->philos[i].l_fork));
 		i++;
 	}
 	pthread_mutex_destroy(&(table->write_mutex));
+	pthread_mutex_destroy(&(table->death_mutex));
 	free(table->philos);
 	table->philos = NULL;
 }
