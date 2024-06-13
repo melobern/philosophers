@@ -43,29 +43,50 @@ bool	wait_dinner(t_philo_thread *philo, u_int64_t time)
 
 void	eat_left(t_philo_thread *p)
 {
+	int protect;
+
 	while (p->is_eating == false && *(p->dead_detected) == false
-		&& (p->meals_defined == false || p->meals_eaten < p->meals_num))
+		   && (p->meals_defined == false || p->meals_eaten < p->meals_num))
 	{
-			if (assign_bool_mutex(&p->l_fork_taken,
-								  &p->l_fork, true) == false)
-				return;
+		if (p->last_meal + p->die_time < get_time_in_ms())
+		{
+			print_message(p, DIED);
+			if (assign_bool_mutex(p->dead_detected, p->write_mutex, true))
+				return ;
+			*(p->dead_detected) = true;
+			return ;
+		}
+		protect = assign_bool_mutex(&p->l_fork_taken,&p->l_fork, true);
+		if (protect == -1)
+			return;
+		if (protect == true)
+		{
 			print_message(p, FORK);
-			if (assign_bool_mutex(p->right_fork_taken,
-								  p->right_fork, true) == false)
-				return;
+			p->num_forks++;
+		}
+		protect = assign_bool_mutex(p->r_fork_taken, p->r_fork, true);
+		if (protect == -1)
+			return ;
+		else if (protect == true && p->num_forks == 1)
+		{
 			print_message(p, FORK);
 			print_message(p, EAT);
 			p->is_eating = true;
 			ft_usleep(p->eat_time);
 			p->last_meal = get_time_in_ms();
-			p->is_eating = false;
 			if (assign_bool_mutex(&p->l_fork_taken,
-								  &p->l_fork, false) == false)
+								  &p->l_fork, false) == -1)
 				return;
-			print_message(p, FORK);
-			if (assign_bool_mutex(p->right_fork_taken,
-								  p->right_fork, false) == false)
+			if (assign_bool_mutex(p->r_fork_taken,
+								  p->r_fork, false) == -1)
 				return;
+			p->meals_eaten++;
+			p->is_eating = false;
+			p->num_forks = 0;
+			print_message(p, SLEEP);
+			ft_usleep(p->sleep_time);
+			print_message(p, THINK);
+		}
 	}
 }
 
@@ -76,38 +97,51 @@ void	eat_right(t_philo_thread *p)
 	while (p->is_eating == false && *(p->dead_detected) == false
 		   && (p->meals_defined == false || p->meals_eaten < p->meals_num))
 	{
-		if (*p->right_fork_taken == false && p->l_fork_taken == false )
+		if (p->last_meal + p->die_time < get_time_in_ms())
 		{
-			protect = assign_bool_mutex(&p->l_fork_taken,&p->l_fork, true);
-			if (protect == -1)
-				return;
-			else if (protect == true)
-				print_message(p, FORK);
-			protect = assign_bool_mutex(p->right_fork_taken,p->right_fork, true);
-			if (protect == -1)
+			print_message(p, DIED);
+			if (assign_bool_mutex(p->dead_detected, p->write_mutex, true))
 				return ;
-			else if (protect == true)
-			{
-				print_message(p, FORK);
-				print_message(p, EAT);
-				p->is_eating = true;
-				ft_usleep(p->eat_time);
-				p->last_meal = get_time_in_ms();
-				p->is_eating = false;
-				if (assign_bool_mutex(&p->l_fork_taken,
-									  &p->l_fork, false) == -1)
-					return;
-				print_message(p, FORK);
-				if (assign_bool_mutex(p->right_fork_taken,
-									  p->right_fork, false) == -1)
-					return;
-			}
+			*(p->dead_detected) = true;
+			return ;
+		}
+		protect = assign_bool_mutex(p->r_fork_taken,p->r_fork, true);
+		if (protect == -1)
+			return;
+		if (protect == true)
+		{
+			print_message(p, FORK);
+			p->num_forks++;
+		}
+		protect = assign_bool_mutex(&p->l_fork_taken, &p->l_fork, true);
+		if (protect == -1)
+			return ;
+		else if (protect == true && p->num_forks == 1)
+		{
+			print_message(p, FORK);
+			print_message(p, EAT);
+			p->is_eating = true;
+			ft_usleep(p->eat_time);
+			p->last_meal = get_time_in_ms();
+			if (assign_bool_mutex(p->r_fork_taken,
+								  p->r_fork, false) == -1)
+				return;
+			if (assign_bool_mutex(&p->l_fork_taken,
+								  &p->l_fork, false) == -1)
+			p->meals_eaten++;
+			p->is_eating = false;
+			print_message(p, SLEEP);
+			ft_usleep(p->sleep_time);
+			print_message(p, THINK);
+				return;
 		}
 	}
 }
+
 void	eat(t_philo_thread *philo, int id)
 {
-
+	if (philo->id % 2 == 0)
+		ft_usleep(1);
 	if (id % 2 == 0)
 		eat_left(philo);
 	else
@@ -116,22 +150,22 @@ void	eat(t_philo_thread *philo, int id)
 
 void	*routine(void *arg)
 {
-	t_philo_thread	*philo;
+	t_philo_thread	*p;
 
 	if (!arg || !wait_dinner((t_philo_thread *) arg, get_time_in_ms()))
 		return (NULL);
-	philo = (t_philo_thread *)arg;
-	while (*(philo->dead_detected) == false
-		&& (philo->meals_defined == false
-			|| philo->meals_eaten < philo->meals_num))
+	p = (t_philo_thread *)arg;
+	while (*(p->dead_detected) == false
+		&& (p->meals_defined == false
+			|| p->meals_eaten < p->meals_num))
 	{
-		if (philo->id % 2 == 0)
-			ft_usleep(1);
-//		if (philo->id % 2 == 0)
-		eat(philo, philo->id);
-		philo->meals_eaten++;
-//		if (philo->id % 2 == 1)
-//			eat(philo);
+//		if (p->meals_eaten < p->meals_num)
+//			break ;
+
+//		if (p->id % 2 == 0)
+		eat(p, p->id);
+//		if (p->id % 2 == 1)
+//			eat(p);
 	}
 	return (NULL);
 }

@@ -83,10 +83,10 @@ typedef struct s_philo_thread
 	u_int64_t		last_meal;
 	int				num_forks;
 	bool			l_fork_taken;
-	bool			*right_fork_taken;
+	bool			*r_fork_taken;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	l_fork;
-	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*write_mutex;
 	bool			is_dead;
 	bool			*dead_detected;
@@ -97,7 +97,7 @@ typedef struct s_philo_thread
 	int				eat_time;
 	int				sleep_time;
 	int				meals_num;
-	unsigned long	*start_time;
+	u_int64_t		*start_time;
 }					t_philo_thread;
 
 typedef struct s_table
@@ -111,7 +111,7 @@ typedef struct s_table
 	int				eat_time;
 	int				sleep_time;
 	int				meals_num;
-	unsigned long	start_time;
+	u_int64_t		start_time;
 	pthread_mutex_t	write_mutex;
 	t_philo_thread	*philos;
 }					t_table;
