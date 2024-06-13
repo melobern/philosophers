@@ -51,7 +51,11 @@ void eating_phase(t_philo_thread *p)
 	assign_bool_mutex(p->r_fork_taken,p->r_fork, false);
 	p->meals_eaten++;
 	p->num_forks = 0;
+	print_message(p, SLEEP, 0);
+	ft_usleep(p->sleep_time);
+	print_message(p, THINK, 0);
 }
+
 void	eat_left(t_philo_thread *p)
 {
 	int fork_is_free;
@@ -72,9 +76,6 @@ void	eat_left(t_philo_thread *p)
 		fork_is_free = assign_bool_mutex(p->r_fork_taken, p->r_fork, true);
 		if (fork_is_free == true && p->num_forks == 1)
 			eating_phase(p);
-		print_message(p, SLEEP, 0);
-		ft_usleep(p->sleep_time);
-		print_message(p, THINK, 0);
 	}
 }
 
@@ -102,9 +103,6 @@ void	eat_right(t_philo_thread *p)
 			return ;
 		else if (fork_is_free == true && p->num_forks == 1)
 			eating_phase(p);
-		print_message(p, SLEEP, 0);
-		ft_usleep(p->sleep_time);
-		print_message(p, THINK, 0);
 	}
 }
 
@@ -113,7 +111,7 @@ void	eat(t_philo_thread *philo, int id)
 	if (id % 2 == 0)
 		ft_usleep(philo->eat_time / 2);
 	if (id % 2 == 0)
-		eat_left(philo);
+	eat_left(philo);
 	else
 		eat_right(philo);
 }
