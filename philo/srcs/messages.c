@@ -14,7 +14,7 @@
 
 void	print_message(t_philo_thread *philo, char *msg)
 {
-	unsigned long	time;
+	u_int64_t time;
 
 	time = get_time_in_ms();
 	pthread_mutex_lock(philo->write_mutex);

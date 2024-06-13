@@ -16,17 +16,17 @@ static void	assign_forks(t_table *t, int i)
 {
 	if (i < t->num_of_philos - 1)
 	{
-		t->philos[i].right_fork = &(t->philos[i + 1].l_fork);
-		t->philos[i].right_fork_taken = &(t->philos[i + 1].l_fork_taken);
+		t->philos[i].r_fork = &(t->philos[i + 1].l_fork);
+		t->philos[i].r_fork_taken = &(t->philos[i + 1].l_fork_taken);
 	}
 	else
 	{
-		t->philos[i].right_fork = &(t->philos[0].l_fork);
-		t->philos[i].right_fork_taken = &(t->philos[0].l_fork_taken);
+		t->philos[i].r_fork = &(t->philos[0].l_fork);
+		t->philos[i].r_fork_taken = &(t->philos[0].l_fork_taken);
 	}
 }
 
-static void	assign_table(t_table *t, int i, unsigned int time)
+static void	assign_table(t_table *t, int i, u_int64_t time)
 {
 	t->philos[i].id = i + 1;
 	t->philos[i].is_eating = false;
@@ -52,13 +52,14 @@ static void	assign_table(t_table *t, int i, unsigned int time)
 bool	init_philo_table(t_table *table)
 {
 	int				i;
-	unsigned int	time;
+	u_int64_t	time;
 
 	i = 0;
 	time = get_time_in_ms();
 	table->dead_detected = false;
 	table->dinner_started = false;
 	table->error_detected = false;
+	table->start_time = time;
 	table->philos = ft_calloc(table->num_of_philos, sizeof(t_philo_thread));
 	if (!table->philos)
 	{

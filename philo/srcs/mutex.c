@@ -34,18 +34,22 @@ bool	mutex_unlock(pthread_mutex_t *mutex)
 
 int	assign_bool_mutex(bool *var, pthread_mutex_t *mutex, bool value)
 {
-	if (*var == value)
-		return (false);
+	bool flag;
+
+	flag = true;
 	if (pthread_mutex_lock(mutex))
 	{
 		write(2, "Error: mutex lock failed\n", 25);
 		return (-1);
 	}
-	*var = value;
+	if (*var != value)
+		*var = value;
+	else
+		flag = false;
 	if (pthread_mutex_unlock(mutex))
 	{
 		write(2, "Error: mutex unlock failed\n", 27);
 		return (-1);
 	}
-	return (true);
+	return (flag);
 }
