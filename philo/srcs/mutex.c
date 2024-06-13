@@ -69,7 +69,7 @@ if (p->meals_defined == false || p->meals_eaten <= p->meals_num)
 			return (false);
 		}
 		if (*(p->dead_detected) == false)
-		flag = true;
+			flag = true;
 		if (pthread_mutex_unlock(p->death_mutex))
 		{
 			write(2, "Error: mutex lock failed\n", 25);

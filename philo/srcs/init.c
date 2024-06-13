@@ -34,7 +34,7 @@ static void	assign_table(t_table *t, int i, u_int64_t time)
 	t->philos[i].last_meal = time;
 	t->philos[i].num_forks = 0;
 	t->philos[i].start_time = &(t->start_time);
-	t->philos[i].is_dead = false;
+//	t->philos[i].is_dead = false;
 	t->philos[i].dead_detected = &(t->dead_detected);
 	t->philos[i].error_detected = &(t->error_detected);
 	t->philos[i].write_mutex = &(t->write_mutex);

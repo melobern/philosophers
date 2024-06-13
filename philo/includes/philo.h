@@ -83,7 +83,7 @@ typedef struct s_philo_thread
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*death_mutex;
 	pthread_mutex_t	*write_mutex;
-	bool			is_dead;
+//	bool			is_dead;
 	bool			*dead_detected;
 	bool			*error_detected;
 	bool			*dinner_started;
