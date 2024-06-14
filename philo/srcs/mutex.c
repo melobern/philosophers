@@ -6,7 +6,7 @@
 /*   By: mbernard <mbernard@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 14:05:49 by mbernard          #+#    #+#             */
-/*   Updated: 2024/06/14 09:25:43 by mbernard         ###   ########.fr       */
+/*   Updated: 2024/06/14 10:56:04 by mbernard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,14 @@ bool	assign_bool_mutex(bool *var, pthread_mutex_t *m, bool value)
 	return (flag);
 }
 
-bool	mutex_check_if_can_eat(t_philo_thread *p)
+bool	no_death_detected(t_philo_thread *p)
 {
 	bool flag;
 
 	flag = false;
-	//	if (p->is_eating == false
-	//		&& (p->meals_defined == false || p->meals_eaten <= p->meals_num))
-	if (p->meals_defined == false || p->meals_eaten < p->meals_num)
-	{
-			pthread_mutex_lock(p->death_mutex);
-			if (*(p->dead_detected) == false)
-				flag = true;
-			pthread_mutex_unlock(p->death_mutex);
-		}
+	pthread_mutex_lock(p->death_mutex);
+	if (*(p->dead_detected) == false)
+		flag = true;
+	pthread_mutex_unlock(p->death_mutex);
 	return (flag);
 }

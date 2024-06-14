@@ -26,7 +26,7 @@ void	print_message(t_philo_thread *philo, char *msg, bool is_death)
 	if (is_death)
 	{
 		*(philo->dead_detected) = true;
-//		philo->is_dead = true;
+//		ft_usleep(1);
 	}
 	pthread_mutex_unlock(philo->death_mutex);
 	pthread_mutex_lock(philo->write_mutex);
