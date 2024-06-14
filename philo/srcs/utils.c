@@ -12,46 +12,6 @@
 
 #include "philo.h"
 
-//
-//void	clear_data(t_data	*data)
-//{
-//	if (data->tid)
-//		free(data->tid);
-//	if (data->forks)
-//		free(data->forks);
-//	if (data->philos)
-//		free(data->philos);
-//}
-//
-//
-//void	ft_exit(t_data *data)
-//{
-//	int	i;
-//
-//	i = -1;
-//	while (++i < data->philo_num)
-//	{
-//		pthread_mutex_destroy(&data->forks[i]);
-//		pthread_mutex_destroy(&data->philos[i].lock);
-//	}
-//	pthread_mutex_destroy(&data->write);
-//	pthread_mutex_destroy(&data->lock);
-//	clear_data(data);
-//}
-//
-//
-//void	error(char *str, size_t str_len, t_table *table)
-//{
-//	write(2, str, str_len);
-//	if (table)
-//		destroy_philo_table(table);
-//}
-/*
- *
- * Pair prend fourchette droite
- * Impair prend fourchette gauche
- * */
-
 void	*ft_calloc(size_t nmemb, size_t size)
 {
 	void	*copy;

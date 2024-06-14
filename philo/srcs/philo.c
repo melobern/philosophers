@@ -12,16 +12,6 @@
 
 #include "philo.h"
 
-//static void	Print_to_erase(t_table *philo_table)
-//{
-//	printf("num_of_philos: %d\n", philo_table->num_of_philos);
-//	printf("die_time: %d\n", philo_table->die_time);
-//	printf("eat_time: %d\n", philo_table->eat_time);
-//	printf("sleep_time: %d\n", philo_table->sleep_time);
-//	if (philo_table->meals_defined)
-//		printf("meals_num: %d\n", philo_table->meals_num);
-//}
-
 static void	launch_diner(t_table *table)
 {
 	int	i;
@@ -41,10 +31,9 @@ static void	launch_diner(t_table *table)
 		table->philos[i].thread_created = true;
 		i++;
 	}
-	if (assign_bool_mutex(&table->dinner_started,
-						  &table->death_mutex,
-						  true) == false)
-		return ;
+	pthread_mutex_lock(&table->death_mutex);
+	table->dinner_started = true;
+	pthread_mutex_unlock(&table->death_mutex);
 }
 
 int	main(int ac, char **av)
