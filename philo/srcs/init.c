@@ -40,7 +40,7 @@ static void	assign_table(t_table *t, int i, u_int64_t time)
 	t->philos[i].write_mutex = &(t->write_mutex);
 	t->philos[i].death_mutex = &(t->death_mutex);
 	t->philos[i].dinner_started = &(t->dinner_started);
-	t->philos[i].meals_defined = &(t->meals_defined);
+	t->philos[i].meals_defined = t->meals_defined;
 	t->philos[i].meals_num = t->meals_num;
 	t->philos[i].eat_time = t->eat_time;
 	t->philos[i].sleep_time = t->sleep_time;

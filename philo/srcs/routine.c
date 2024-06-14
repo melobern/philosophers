@@ -6,7 +6,7 @@
 /*   By: mbernard <mbernard@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 08:44:55 by mbernard          #+#    #+#             */
-/*   Updated: 2024/06/14 09:17:29 by mbernard         ###   ########.fr       */
+/*   Updated: 2024/06/14 09:31:01 by mbernard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,31 +40,30 @@ bool	wait_dinner(t_philo_thread *philo, u_int64_t time)
 
 void eating_phase(t_philo_thread **p)
 {
-	print_message((*p), FORK, 0);
 	print_message((*p), EAT, 0);
-	ft_usleep((*p)->eat_time);
 	(*p)->last_meal = get_time_in_ms();
+	ft_usleep((*p)->eat_time);
 	assign_bool_mutex(&(*p)->l_fork_taken,&(*p)->l_fork, false);
 	assign_bool_mutex((*p)->r_fork_taken,(*p)->r_fork, false);
 	(*p)->meals_eaten++;
-	(*p)->num_forks = 0;
+//	(*p)->num_forks = 0;
 	if ((*p)->meals_defined == false || (*p)->meals_eaten < (*p)->meals_num)
 	{
 		print_message((*p), SLEEP, 0);
 		ft_usleep((*p)->sleep_time);
 		print_message((*p), THINK, 0);
 	}
-//	else
-//	{
-//		pthread_mutex_lock((*p)->write_mutex);
-//		printf("%d HAS EATEN ENOUGH !\n", (*p)->id);
-//		pthread_mutex_unlock((*p)->write_mutex);
-//	}
+/*	else
+	{
+		pthread_mutex_lock((*p)->write_mutex);
+		printf("%d HAS EATEN ENOUGH !\n", (*p)->id);
+		pthread_mutex_unlock((*p)->write_mutex);
+	}*/
 }
 
 void	eat_left(t_philo_thread **p)
 {
-	int fork_is_free;
+	bool fork_is_free;
 
 	while (mutex_check_if_can_eat(*p))
 	{
@@ -78,25 +77,25 @@ void	eat_left(t_philo_thread **p)
 		{
 			print_message((*p), FORK, 0);
 			(*p)->num_forks++;
-//			pthread_mutex_lock((*p)->write_mutex);
-//			printf("%d HAS %d FORK(S) !!!\n", (*p)->id, (*p)->num_forks);
-//			pthread_mutex_unlock((*p)->write_mutex);
-			fork_is_free = assign_bool_mutex((*p)->r_fork_taken, (*p)->r_fork,
-											 true);
-//			pthread_mutex_lock((*p)->write_mutex);
-//			if (fork_is_free)
-//				printf("%d HAS %d FORK(S) !!! and the bool is TRUE !\n", (*p)->id,
-//					   (*p)->num_forks);
-//			pthread_mutex_unlock((*p)->write_mutex);
-			if (fork_is_free == true && (*p)->num_forks == 1)
-				eating_phase(p);
+		}
+		fork_is_free = assign_bool_mutex((*p)->r_fork_taken, (*p)->r_fork,
+										 true);
+		if (fork_is_free == true)
+		{
+			print_message((*p), FORK, 0);
+			(*p)->num_forks++;
+		}
+		if ((*p)->num_forks == 2)
+		{
+			eating_phase(p);
+			(*p)->num_forks = 0;
 		}
 	}
 }
 
 void	eat_right(t_philo_thread **p)
 {
-	int fork_is_free;
+	bool	fork_is_free;
 
 	while (mutex_check_if_can_eat(*p))
 	{
@@ -106,20 +105,23 @@ void	eat_right(t_philo_thread **p)
 			return ;
 		}
 		fork_is_free = assign_bool_mutex((*p)->r_fork_taken, (*p)->r_fork, true);
-		if (fork_is_free == -1)
-			return;
 		if (fork_is_free == true)
 		{
 			print_message((*p), FORK, 0);
 			(*p)->num_forks++;
 		}
-		fork_is_free = assign_bool_mutex(&(*p)->l_fork_taken, &(*p)->l_fork, true);
-		pthread_mutex_lock((*p)->write_mutex);
-//		if (fork_is_free)
-//			printf("%d HAS %d FORK(S) !!! and the bool is TRUE !\n", (*p)->id, (*p)->num_forks);
-		pthread_mutex_unlock((*p)->write_mutex);
-		if (fork_is_free == true && (*p)->num_forks == 1)
+		fork_is_free = assign_bool_mutex(&(*p)->l_fork_taken, &(*p)->l_fork,
+										 true);
+		if (fork_is_free == true)
+		{
+			print_message((*p), FORK, 0);
+			(*p)->num_forks++;
+		}
+		if ((*p)->num_forks == 2)
+		{
 			eating_phase(p);
+			(*p)->num_forks = 0;
+		}
 	}
 }
 

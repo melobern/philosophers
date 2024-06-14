@@ -6,7 +6,7 @@
 /*   By: mbernard <mbernard@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:56:09 by mbernard          #+#    #+#             */
-/*   Updated: 2024/06/10 15:47:15 by mbernard         ###   ########.fr       */
+/*   Updated: 2024/06/14 08:28:34 by mbernard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ typedef struct s_philo_thread
 	bool			*dead_detected;
 	bool			*error_detected;
 	bool			*dinner_started;
-	bool			*meals_defined;
+	bool			meals_defined;
 	int				die_time;
 	int				eat_time;
 	int				sleep_time;
