@@ -6,7 +6,7 @@
 /*   By: mbernard <mbernard@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:57:26 by mbernard          #+#    #+#             */
-/*   Updated: 2024/06/07 08:31:29 by mbernard         ###   ########.fr       */
+/*   Updated: 2024/06/14 13:04:28 by mbernard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,11 @@ static void	assign_table(t_table *t, int i, u_int64_t time)
 	t->philos[i].start_time = &(t->start_time);
 	t->philos[i].dead_detected = &(t->dead_detected);
 	t->philos[i].error_detected = &(t->error_detected);
+	t->philos[i].everyone_has_eaten = &(t->everyone_has_eaten);
 	t->philos[i].write_mutex = &(t->write_mutex);
 	t->philos[i].death_mutex = &(t->death_mutex);
 	t->philos[i].dinner_started = &(t->dinner_started);
+	t->philos[i].num_of_philos = t->num_of_philos;
 	t->philos[i].meals_defined = t->meals_defined;
 	t->philos[i].meals_num = t->meals_num;
 	t->philos[i].eat_time = t->eat_time;
@@ -45,6 +47,7 @@ static void	assign_table(t_table *t, int i, u_int64_t time)
 	t->philos[i].die_time = t->die_time;
 	t->philos[i].l_fork_taken = false;
 	t->philos[i].thread_created = false;
+//	t->philos[i].table = t;
 	assign_forks(t, i);
 }
 
@@ -58,6 +61,7 @@ bool	init_philo_table(t_table *table)
 	table->dead_detected = false;
 	table->dinner_started = false;
 	table->error_detected = false;
+	table->everyone_has_eaten = false;
 	table->start_time = time;
 	table->philos = ft_calloc(table->num_of_philos, sizeof(t_philo_thread));
 	if (!table->philos)

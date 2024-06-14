@@ -32,6 +32,7 @@ bool	no_death_detected(t_philo_thread *p)
 	bool flag;
 
 	flag = false;
+
 	pthread_mutex_lock(p->death_mutex);
 	if (*(p->dead_detected) == false)
 		flag = true;

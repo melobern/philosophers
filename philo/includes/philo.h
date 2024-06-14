@@ -6,7 +6,7 @@
 /*   By: mbernard <mbernard@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:56:09 by mbernard          #+#    #+#             */
-/*   Updated: 2024/06/14 10:30:33 by mbernard         ###   ########.fr       */
+/*   Updated: 2024/06/14 13:04:28 by mbernard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ Check the output should never produce a scrambled view.
 Check how the death of a philosopher is checked and if there is a mutex
 to protect that a philosopher dies and start eating at the same time.
 */
+typedef struct s_table	t_table;
 
 typedef struct s_philo_thread
 {
@@ -84,13 +85,16 @@ typedef struct s_philo_thread
 	pthread_mutex_t	*write_mutex;
 	bool			*dead_detected;
 	bool			*error_detected;
+	bool			*everyone_has_eaten;
 	bool			*dinner_started;
 	bool			meals_defined;
+	int				num_of_philos;
 	int				die_time;
 	int				eat_time;
 	int				sleep_time;
 	int				meals_num;
 	u_int64_t		*start_time;
+//	t_table			*table;
 }					t_philo_thread;
 
 typedef struct s_table
@@ -99,6 +103,7 @@ typedef struct s_table
 	bool			dead_detected;
 	bool			dinner_started;
 	bool			error_detected;
+	bool			everyone_has_eaten;
 	int				num_of_philos;
 	int				die_time;
 	int				eat_time;
@@ -119,7 +124,7 @@ u_int64_t			get_time_in_ms(void);
 //////////////////////		ROUTINE 				////////////////////////////
 void				*routine(void *arg);
 //////////////////////		MESSAGES 				////////////////////////////
-void				print_message(t_philo_thread *philo, char *msg, bool is_dead);
+void				print_message(t_philo_thread *p, char *msg, bool is_dead);
 //////////////////////		INIT	 				////////////////////////////
 bool				init_philo_table(t_table *table);
 bool				init_mutex(t_table *table);
