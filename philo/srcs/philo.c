@@ -42,7 +42,7 @@ static void	launch_diner(t_table *table)
 		i++;
 	}
 	if (assign_bool_mutex(&table->dinner_started,
-						  &table->write_mutex,
+						  &table->death_mutex,
 						  true) == false)
 		return ;
 }

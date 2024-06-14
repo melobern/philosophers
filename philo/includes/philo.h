@@ -6,7 +6,7 @@
 /*   By: mbernard <mbernard@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:56:09 by mbernard          #+#    #+#             */
-/*   Updated: 2024/06/14 08:28:34 by mbernard         ###   ########.fr       */
+/*   Updated: 2024/06/14 10:30:33 by mbernard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ typedef struct s_philo_thread
 	int				id;
 	bool			thread_created;
 	bool			mutex_created;
-//	bool			is_eating;
 	int				meals_eaten;
 	u_int64_t		last_meal;
 	int				num_forks;
@@ -83,7 +82,6 @@ typedef struct s_philo_thread
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*death_mutex;
 	pthread_mutex_t	*write_mutex;
-//	bool			is_dead;
 	bool			*dead_detected;
 	bool			*error_detected;
 	bool			*dinner_started;
@@ -126,7 +124,7 @@ void				print_message(t_philo_thread *philo, char *msg, bool is_dead);
 bool				init_philo_table(t_table *table);
 bool				init_mutex(t_table *table);
 //////////////////////		MUTEX	 				////////////////////////////
-bool				mutex_check_if_can_eat(t_philo_thread *p);
+bool				no_death_detected(t_philo_thread *p);
 bool 				assign_bool_mutex(bool *var, pthread_mutex_t *m, bool value);
 
 //////////////////////		DESTROY	 				////////////////////////////
