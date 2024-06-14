@@ -125,12 +125,9 @@ void				print_message(t_philo_thread *philo, char *msg, bool is_dead);
 //////////////////////		INIT	 				////////////////////////////
 bool				init_philo_table(t_table *table);
 bool				init_mutex(t_table *table);
-int 				assign_bool_mutex(bool *var, pthread_mutex_t *mutex,
-									  bool value);
 //////////////////////		MUTEX	 				////////////////////////////
-bool				mutex_lock(pthread_mutex_t *mutex);
-bool				mutex_unlock(pthread_mutex_t *mutex);
 bool				mutex_check_if_can_eat(t_philo_thread *p);
+bool 				assign_bool_mutex(bool *var, pthread_mutex_t *m, bool value);
 
 //////////////////////		DESTROY	 				////////////////////////////
 void				destroy_philo_table(t_table *table);
