@@ -73,6 +73,8 @@ typedef struct s_philo_thread
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*death_mutex;
 	pthread_mutex_t	*write_mutex;
+	pthread_mutex_t	*meals_mutex;
+	pthread_mutex_t	*errors_mutex;
 	bool			*dead_detected;
 	bool			*error_detected;
 	bool			*dinner_started;
@@ -101,6 +103,8 @@ typedef struct s_table
 	u_int64_t		start_time;
 	pthread_mutex_t	write_mutex;
 	pthread_mutex_t	death_mutex;
+	pthread_mutex_t	meals_mutex;
+	pthread_mutex_t	errors_mutex;
 	t_philo_thread	*philos;
 }					t_table;
 

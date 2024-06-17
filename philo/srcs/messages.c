@@ -16,13 +16,13 @@ bool	everyone_has_eaten(t_philo_thread *p)
 {
 	if (p->meals_defined)
 	{
-		pthread_mutex_lock(p->death_mutex);
+		pthread_mutex_lock(p->meals_mutex);
 		if (p->table->finished_meals == p->num_of_philos)
 		{
-			pthread_mutex_unlock(p->death_mutex);
+			pthread_mutex_unlock(p->meals_mutex);
 			return (true);
 		}
-		pthread_mutex_unlock(p->death_mutex);
+		pthread_mutex_unlock(p->meals_mutex);
 	}
 	return (false);
 }
@@ -41,8 +41,9 @@ void	print_msg(t_philo_thread *p, char *msg, bool is_dead, bool is_eat)
 	if (is_dead)
 		*(p->dead_detected) = true;
 	pthread_mutex_unlock(p->death_mutex);
-	if (is_eat)
-		ft_usleep(1, p);
+	(void)is_eat;
+//	if (is_eat)
+//		ft_usleep(1, p);
 	if (is_dead)
 		ft_usleep(2, NULL);
 	if (everyone_has_eaten(p))

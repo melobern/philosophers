@@ -14,13 +14,13 @@
 
 bool	check_threads(t_philo_thread *philo)
 {
-	pthread_mutex_lock(philo->death_mutex);
+	pthread_mutex_lock(philo->errors_mutex);
 	if (*(philo->error_detected) == true)
 	{
-		pthread_mutex_unlock(philo->death_mutex);
+		pthread_mutex_unlock(philo->errors_mutex);
 		return (false);
 	}
-	pthread_mutex_unlock(philo->death_mutex);
+	pthread_mutex_unlock(philo->errors_mutex);
 	return (true);
 }
 
@@ -31,15 +31,15 @@ void	eating_phase(t_philo_thread **p)
 	(*p)->meals_eaten++;
 	if ((*p)->meals_defined)
 	{
-		pthread_mutex_lock((*p)->death_mutex);
+		pthread_mutex_lock((*p)->meals_mutex);
 		if ((*p)->meals_eaten == (*p)->meals_num)
 			(*p)->table->finished_meals++;
 		if ((*p)->table->finished_meals == (*p)->num_of_philos)
 		{
-			pthread_mutex_unlock((*p)->death_mutex);
+			pthread_mutex_unlock((*p)->meals_mutex);
 			return ;
 		}
-		pthread_mutex_unlock((*p)->death_mutex);
+		pthread_mutex_unlock((*p)->meals_mutex);
 	}
 	ft_usleep((*p)->eat_time, *p);
 	assign_bool_mutex(&(*p)->l_fork_taken, &(*p)->l_fork, false);
@@ -51,6 +51,7 @@ void	eating_phase(t_philo_thread **p)
 	if (everyone_has_eaten((*p)))
 		return ;
 	print_msg((*p), THINK, 0, 0);
+	ft_usleep(10, *p);
 }
 
 void	eat_left(t_philo_thread **p)
@@ -106,21 +107,20 @@ void	*routine(void *arg)
 	if (!arg)
 		return (NULL);
 	p = (t_philo_thread *)arg;
-	if (!arg || !check_threads((t_philo_thread *) arg))
+	if (!check_threads((t_philo_thread *) arg))
 		return (NULL);
-	pthread_mutex_lock(p->death_mutex);
+	pthread_mutex_lock(p->meals_mutex);
 	if (*p->dinner_started == false)
 	{
 		p->table->start_time = get_time_in_ms();
 		*p->dinner_started = true;
 	}
-	pthread_mutex_unlock(p->death_mutex);
+	pthread_mutex_unlock(p->meals_mutex);
 	p->start_time = p->table->start_time;
 	p->last_meal = p->table->start_time;
 	if (p->id % 2 == 0)
-		ft_usleep(p->eat_time * 0.1, p);
+		ft_usleep(p->eat_time * 0.5, p);
 //	dprintf(2, "philo id == %d\n", p->id);
-
 	while (no_death_detected(&(*p)) && check_threads(p))
 	{
 		if (p->meals_defined == false || p->meals_eaten < p->meals_num)
@@ -132,6 +132,7 @@ void	*routine(void *arg)
 		}
 		if (p->meals_defined && p->meals_eaten == p->meals_num)
 			break ;
+		ft_usleep(30, p);
 	}
 	return (NULL);
 }
