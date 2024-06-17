@@ -38,6 +38,8 @@ void	destroy_philo_table(t_table *table)
 	}
 	pthread_mutex_destroy(&(table->write_mutex));
 	pthread_mutex_destroy(&(table->death_mutex));
+	pthread_mutex_destroy(&(table->meals_mutex));
+	pthread_mutex_destroy(&(table->errors_mutex));
 	free(table->philos);
 	table->philos = NULL;
 }
