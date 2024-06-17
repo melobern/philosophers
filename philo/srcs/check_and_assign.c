@@ -50,20 +50,20 @@ static int	ft_atol_int(const char *str)
 	return ((int)nb);
 }
 
-static void	assign_arguments_to_philo_table(t_table *p, int num, int var)
+static void	assign_arguments_to_philo_table(t_table *t, int num, int var)
 {
 	if (var == 1)
-		p->num_of_philos = num;
+		t->num_of_philos = num;
 	else if (var == 2)
-		p->die_time = num;
+		t->die_time = num;
 	else if (var == 3)
-		p->eat_time = num;
+		t->eat_time = num;
 	else if (var == 4)
-		p->sleep_time = num;
+		t->sleep_time = num;
 	else if (var == 5)
 	{
-		p->meals_num = num;
-		p->meals_defined = true;
+		t->meals_num = num;
+		t->meals_defined = true;
 	}
 }
 
@@ -88,13 +88,13 @@ static bool	check_philos_number(t_table *t, int num_of_philos)
 	return (false);
 }
 
-bool	check_arguments_and_assign(char **av, t_table *p)
+bool	check_arguments_and_assign(char **av, t_table *t)
 {
 	int	i;
 	int	atol_value;
 
 	i = 1;
-	p->meals_defined = false;
+	t->meals_defined = false;
 	while (av[i])
 	{
 		atol_value = ft_atol_int(av[i]);
@@ -108,11 +108,11 @@ bool	check_arguments_and_assign(char **av, t_table *p)
 				write(2, "Error: arguments must be integers\n", 35);
 			return (false);
 		}
-		assign_arguments_to_philo_table(p, atol_value, i);
+		assign_arguments_to_philo_table(t, atol_value, i);
 		i++;
 	}
-	if (check_philos_number(p, p->num_of_philos) == false)
+	if (check_philos_number(t, t->num_of_philos) == false)
 		return (false);
-	p->dead_detected = false;
+	t->dead_detected = false;
 	return (true);
 }
