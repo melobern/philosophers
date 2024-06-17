@@ -31,6 +31,8 @@ bool	no_death_detected(t_philo_thread *p)
 	bool	flag;
 
 	flag = false;
+	if (p->last_meal + p->die_time < get_time_in_ms())
+		print_msg(p, DIED, 1, 0);
 	pthread_mutex_lock(p->death_mutex);
 	if (*(p->dead_detected) == false)
 		flag = true;
