@@ -108,7 +108,7 @@ typedef struct s_table
 bool				check_arguments_and_assign(char **av, t_table *t);
 //////////////////////		UTILS						////////////////////////
 void				*ft_calloc(size_t nmemb, size_t size);
-int					ft_usleep(useconds_t time);
+int					ft_usleep(useconds_t time, t_philo_thread *p);
 u_int64_t			get_time_in_ms(void);
 //////////////////////		ROUTINE 				////////////////////////////
 void				*routine(void *arg);

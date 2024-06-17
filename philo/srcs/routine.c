@@ -55,13 +55,13 @@ void	eating_phase(t_philo_thread **p)
 		}
 		pthread_mutex_unlock((*p)->death_mutex);
 	}
-	ft_usleep((*p)->eat_time);
+	ft_usleep((*p)->eat_time, *p);
 	assign_bool_mutex(&(*p)->l_fork_taken, &(*p)->l_fork, false);
 	assign_bool_mutex((*p)->r_fork_taken, (*p)->r_fork, false);
 	if (everyone_has_eaten((*p)))
 		return ;
 	print_msg((*p), SLEEP, 0, 0);
-	ft_usleep((*p)->sleep_time);
+	ft_usleep((*p)->sleep_time, *p);
 	if (everyone_has_eaten((*p)))
 		return ;
 	print_msg((*p), THINK, 0, 0);
@@ -122,7 +122,7 @@ void	*routine(void *arg)
 	p = (t_philo_thread *)arg;
 	p->last_meal = get_time_in_ms();
 	if (p->id % 2 == 0)
-		ft_usleep(p->eat_time / 10);
+		ft_usleep(p->eat_time * 0.1, p);
 	while (no_death_detected(&(*p)))
 	{
 		if (p->meals_defined == false || p->meals_eaten < p->meals_num)
