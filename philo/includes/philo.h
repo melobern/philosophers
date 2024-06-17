@@ -82,7 +82,7 @@ typedef struct s_philo_thread
 	int				eat_time;
 	int				sleep_time;
 	int				meals_num;
-	u_int64_t		*start_time;
+	u_int64_t		start_time;
 	t_table			*table;
 }					t_philo_thread;
 

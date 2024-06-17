@@ -33,7 +33,7 @@ static void	launch_diner(t_table *table)
 	}
 	pthread_mutex_lock(&table->death_mutex);
 	table->dinner_started = true;
-	table->start_time = get_time_in_ms();
+//	table->start_time = get_time_in_ms();
 	pthread_mutex_unlock(&table->death_mutex);
 }
 
