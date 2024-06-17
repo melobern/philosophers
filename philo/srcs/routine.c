@@ -120,15 +120,11 @@ void	*routine(void *arg)
 	if (!arg || !wait_dinner((t_philo_thread *)arg, get_time_in_ms()))
 		return (NULL);
 	p = (t_philo_thread *)arg;
+	p->last_meal = *p->start_time;
 	if (p->id % 2 == 0)
 		ft_usleep(p->eat_time / 10);
 	while (no_death_detected(&(*p)))
 	{
-		if (p->last_meal + p->die_time < get_time_in_ms())
-		{
-			print_msg(p, DIED, 1, 0);
-			break ;
-		}
 		if (p->meals_defined == false || p->meals_eaten < p->meals_num)
 		{
 			if (p->id % 2 == 0)

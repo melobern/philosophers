@@ -28,11 +28,10 @@ static void	assign_forks(t_table *t, int i)
 	}
 }
 
-static void	assign_philos(t_table *t, int i, u_int64_t time)
+static void	assign_philos(t_table *t, int i)
 {
 	t->philos[i].id = i + 1;
 	t->philos[i].meals_eaten = 0;
-	t->philos[i].last_meal = time;
 	t->philos[i].start_time = &(t->start_time);
 	t->philos[i].dead_detected = &(t->dead_detected);
 	t->philos[i].error_detected = &(t->error_detected);
@@ -53,15 +52,12 @@ static void	assign_philos(t_table *t, int i, u_int64_t time)
 bool	init_table(t_table *table)
 {
 	int			i;
-	u_int64_t	time;
 
 	i = 0;
-	time = get_time_in_ms();
 	table->dead_detected = false;
 	table->dinner_started = false;
 	table->error_detected = false;
 	table->finished_meals = 0;
-	table->start_time = time;
 	table->philos = ft_calloc(table->num_of_philos, sizeof(t_philo_thread));
 	if (!table->philos)
 	{
@@ -70,7 +66,7 @@ bool	init_table(t_table *table)
 	}
 	while (i < table->num_of_philos)
 	{
-		assign_philos(table, i, time);
+		assign_philos(table, i);
 		i++;
 	}
 	return (true);
