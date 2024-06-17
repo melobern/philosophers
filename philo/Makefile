@@ -12,8 +12,8 @@
 
 CC = cc
 NAME = philo
-#CFLAGS = -Wall -Wextra -Werror -MMD -MP -g -O3 -pthread #-fsanitize=thread
-CFLAGS = -MMD -MP -g -O3 -pthread #-fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -MMD -MP -g -O3 -pthread -fsanitize=thread
+#CFLAGS = -MMD -MP -g -O3 -pthread -fsanitize=thread
 MKDIR = mkdir -p
 RMDIR = rm -rf
 

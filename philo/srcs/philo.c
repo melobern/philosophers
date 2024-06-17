@@ -54,7 +54,7 @@ int	main(int ac, char **av)
 		printf("%u 1 died\n", table.die_time + 1);
 		return (0);
 	}
-	if (init_philo_table(&table) == false)
+	if (init_table(&table) == false)
 		return (1);
 	if (init_mutex(&table))
 		launch_diner(&table);

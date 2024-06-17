@@ -85,7 +85,6 @@ typedef struct s_philo_thread
 	pthread_mutex_t	*write_mutex;
 	bool			*dead_detected;
 	bool			*error_detected;
-	bool			*everyone_has_eaten;
 	bool			*dinner_started;
 	bool			meals_defined;
 	int				num_of_philos;
@@ -94,7 +93,7 @@ typedef struct s_philo_thread
 	int				sleep_time;
 	int				meals_num;
 	u_int64_t		*start_time;
-//	t_table			*table;
+	t_table			*table;
 }					t_philo_thread;
 
 typedef struct s_table
@@ -103,8 +102,8 @@ typedef struct s_table
 	bool			dead_detected;
 	bool			dinner_started;
 	bool			error_detected;
-	bool			everyone_has_eaten;
 	int				num_of_philos;
+	int 			finished_meals;
 	int				die_time;
 	int				eat_time;
 	int				sleep_time;
@@ -116,7 +115,7 @@ typedef struct s_table
 }					t_table;
 
 //////////////////////		CHECK AND ASSIGN 		////////////////////////////
-bool				check_arguments_and_assign(char **av, t_table *p);
+bool				check_arguments_and_assign(char **av, t_table *t);
 //////////////////////		UTILS						////////////////////////
 void				*ft_calloc(size_t nmemb, size_t size);
 int					ft_usleep(useconds_t time);
@@ -124,9 +123,10 @@ u_int64_t			get_time_in_ms(void);
 //////////////////////		ROUTINE 				////////////////////////////
 void				*routine(void *arg);
 //////////////////////		MESSAGES 				////////////////////////////
-void				print_message(t_philo_thread *p, char *msg, bool is_dead);
+void				print_message(t_philo_thread *p, char *msg, bool is_dead, bool is_eat);
+bool				everyone_has_eaten(t_philo_thread *p);
 //////////////////////		INIT	 				////////////////////////////
-bool				init_philo_table(t_table *table);
+bool				init_table(t_table *table);
 bool				init_mutex(t_table *table);
 //////////////////////		MUTEX	 				////////////////////////////
 bool				no_death_detected(t_philo_thread *p);

@@ -21,15 +21,15 @@ bool	wait_dinner(t_philo_thread *philo, u_int64_t time)
 	while (1)
 	{
 		pthread_mutex_lock(philo->death_mutex);
-		if (*philo->dinner_started == true)
-		{
-			pthread_mutex_unlock(philo->death_mutex);
-			return (true);
-		}
 		if (*(philo->error_detected) == true)
 		{
 			pthread_mutex_unlock(philo->death_mutex);
 			return (false);
+		}
+		if (*philo->dinner_started == true)
+		{
+			pthread_mutex_unlock(philo->death_mutex);
+			return (true);
 		}
 		pthread_mutex_unlock(philo->death_mutex);
 		limit_time = get_time_in_ms();
@@ -38,54 +38,33 @@ bool	wait_dinner(t_philo_thread *philo, u_int64_t time)
 	}
 }
 
-//bool	everyone_has_eaten(t_table *t, t_philo_thread **p)
-//{
-//	int i;
-//	int finished;
-//
-////	i = 0 - (*p)->id - 1;
-//	i = 0;
-//	finished = 1;
-//	while (i < (*p)->num_of_philos) //p[i]->thread != 0)
-//	{
-//
-//		if (t->philos[i].meals_eaten == p[i]->meals_num)
-//		{
-//			finished++;
-//		}
-//		i++;
-//	}
-//	if (finished >= (*p)->num_of_philos)
-//	{
-////		printf("EVERYONE HAS EATEN\n");
-////		*(*p)->everyone_has_eaten = true;
-////			pthread_mutex_lock((*p)->write_mutex);
-////	printf("%d\tNUM OF MEALS\t%d\n",(*p)->id, (*p)->meals_eaten);
-////	printf("%d\tNUM TOTAL\t%d\n",(*p)->id, (*p)->meals_num);
-////	printf("%d\tFINISHED\t%d\n",(*p)->id, finished);
-////	pthread_mutex_unlock((*p)->write_mutex);
-//		return (true);
-//	}
-//	return (false);
-//}
-
 void eating_phase(t_philo_thread **p)
 {
-	print_message((*p), EAT, 0);
+	print_message((*p), EAT, 0, 1);
 	(*p)->last_meal = get_time_in_ms();
+	(*p)->meals_eaten++;
+	if ((*p)->meals_defined)
+	{
+		pthread_mutex_lock((*p)->death_mutex);
+		if ((*p)->meals_eaten == (*p)->meals_num)
+			(*p)->table->finished_meals++;
+		if ((*p)->table->finished_meals == (*p)->num_of_philos)
+		{
+			pthread_mutex_unlock((*p)->death_mutex);
+			return;
+		}
+		pthread_mutex_unlock((*p)->death_mutex);
+	}
 	ft_usleep((*p)->eat_time);
 	assign_bool_mutex(&(*p)->l_fork_taken,&(*p)->l_fork, false);
 	assign_bool_mutex((*p)->r_fork_taken,(*p)->r_fork, false);
-	pthread_mutex_lock((*p)->death_mutex);
-	(*p)->meals_eaten++;
-	pthread_mutex_unlock((*p)->death_mutex);
-	if (((*p)->meals_defined == false || (*p)->meals_eaten < (*p)->meals_num))
-//		 && everyone_has_eaten( (*p)->table, p) == false)
-	{
-		print_message((*p), SLEEP, 0);
-		ft_usleep((*p)->sleep_time);
-		print_message((*p), THINK, 0);
-	}
+	if (everyone_has_eaten((*p)))
+		return ;
+	print_message((*p), SLEEP, 0, 0);
+	ft_usleep((*p)->sleep_time);
+	if (everyone_has_eaten((*p)))
+		return ;
+	print_message((*p), THINK, 0, 0);
 }
 
 void	eat_left(t_philo_thread **p)
@@ -95,13 +74,13 @@ void	eat_left(t_philo_thread **p)
 	fork_is_free = assign_bool_mutex(&(*p)->l_fork_taken, &(*p)->l_fork, true);
 	if (fork_is_free == true)
 	{
-		print_message((*p), FORK, 0);
+		print_message((*p), FORK, 0,0 );
 		(*p)->num_forks++;
 	}
 	fork_is_free = assign_bool_mutex((*p)->r_fork_taken, (*p)->r_fork,true);
 	if (fork_is_free == true)
 	{
-		print_message((*p), FORK, 0);
+		print_message((*p), FORK, 0, 0);
 		(*p)->num_forks++;
 	}
 	if ((*p)->num_forks == 2)
@@ -118,14 +97,13 @@ void	eat_right(t_philo_thread **p)
 	fork_is_free = assign_bool_mutex((*p)->r_fork_taken, (*p)->r_fork, true);
 	if (fork_is_free == true)
 	{
-		print_message((*p), FORK, 0);
+		print_message((*p), FORK, 0, 0);
 		(*p)->num_forks++;
 	}
-
 	fork_is_free = assign_bool_mutex(&(*p)->l_fork_taken, &(*p)->l_fork, true);
 	if (fork_is_free == true)
 	{
-		print_message((*p), FORK, 0);
+		print_message((*p), FORK, 0, 0);
 		(*p)->num_forks++;
 	}
 	if ((*p)->num_forks == 2)
@@ -143,18 +121,12 @@ void	*routine(void *arg)
 		return (NULL);
 	p = (t_philo_thread *)arg;
 	if (p->id % 2 == 0)
-	{
-		ft_usleep(p->eat_time / 2);
-	}
+		ft_usleep(p->eat_time / 10);
 	while (no_death_detected(&(*p)))
 	{
-//		if (p->meals_defined && everyone_has_eaten(p->table, &p) == true)
-//		{
-//			break;
-//		}
 		if (p->last_meal + p->die_time < get_time_in_ms())
 		{
-			print_message(p, DIED, 1);
+			print_message(p, DIED, 1, 0);
 			break ;
 		}
 		if (p->meals_defined == false || p->meals_eaten < p->meals_num)

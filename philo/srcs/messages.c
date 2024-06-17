@@ -12,7 +12,21 @@
 
 #include "philo.h"
 
-void	print_message(t_philo_thread *p, char *msg, bool is_death)
+bool	everyone_has_eaten(t_philo_thread *p)
+{
+	if (p->meals_defined)
+	{
+		pthread_mutex_lock(p->death_mutex);
+		if (p->table->finished_meals == p->num_of_philos)
+		{
+			pthread_mutex_unlock(p->death_mutex);
+			return (true);
+		}
+		pthread_mutex_unlock(p->death_mutex);
+	}
+	return (false);
+}
+void	print_message(t_philo_thread *p, char *msg, bool is_death, bool is_eat)
 {
 	u_int64_t time;
 
@@ -23,13 +37,15 @@ void	print_message(t_philo_thread *p, char *msg, bool is_death)
 		pthread_mutex_unlock(p->death_mutex);
 		return ;
 	}
-
 	if (is_death)
-	{
 		*(p->dead_detected) = true;
-		ft_usleep(1);
-	}
 	pthread_mutex_unlock(p->death_mutex);
+	if (is_eat)
+		ft_usleep(1);
+	if (is_death)
+		ft_usleep(2);
+	if (everyone_has_eaten(p))
+		return ;
 	pthread_mutex_lock(p->write_mutex);
 	printf("%lu\t%d\t%s", time - *(p->start_time), p->id, msg);
 	pthread_mutex_unlock(p->write_mutex);
