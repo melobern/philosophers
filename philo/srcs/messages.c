@@ -26,9 +26,10 @@ bool	everyone_has_eaten(t_philo_thread *p)
 	}
 	return (false);
 }
-void	print_message(t_philo_thread *p, char *msg, bool is_death, bool is_eat)
+
+void	print_msg(t_philo_thread *p, char *msg, bool is_dead, bool is_eat)
 {
-	u_int64_t time;
+	u_int64_t	time;
 
 	time = get_time_in_ms();
 	pthread_mutex_lock(p->death_mutex);
@@ -37,12 +38,12 @@ void	print_message(t_philo_thread *p, char *msg, bool is_death, bool is_eat)
 		pthread_mutex_unlock(p->death_mutex);
 		return ;
 	}
-	if (is_death)
+	if (is_dead)
 		*(p->dead_detected) = true;
 	pthread_mutex_unlock(p->death_mutex);
 	if (is_eat)
 		ft_usleep(1);
-	if (is_death)
+	if (is_dead)
 		ft_usleep(2);
 	if (everyone_has_eaten(p))
 		return ;
