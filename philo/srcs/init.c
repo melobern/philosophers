@@ -52,7 +52,7 @@ static void	assign_philos(t_table *t, int i, u_int64_t time)
 
 bool	init_table(t_table *table)
 {
-	int				i;
+	int			i;
 	u_int64_t	time;
 
 	i = 0;

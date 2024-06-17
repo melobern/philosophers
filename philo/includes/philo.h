@@ -56,16 +56,6 @@ number_of_philosophers\tdie_time\teat_time\tsleep_time\t\
 #  define DIED " died\n"
 # endif
 
-/*
-Check the code of Philo for the following things and ask for an explanation.
-Check if there is one thread per philosopher.
-Check there's only one fork per philosopher.
-Check if there is a mutex per fork and
-that it's used to check the fork value and/or change it.
-Check the output should never produce a scrambled view.
-Check how the death of a philosopher is checked and if there is a mutex
-to protect that a philosopher dies and start eating at the same time.
-*/
 typedef struct s_table	t_table;
 
 typedef struct s_philo_thread
@@ -103,7 +93,7 @@ typedef struct s_table
 	bool			dinner_started;
 	bool			error_detected;
 	int				num_of_philos;
-	int 			finished_meals;
+	int				finished_meals;
 	int				die_time;
 	int				eat_time;
 	int				sleep_time;
@@ -123,14 +113,15 @@ u_int64_t			get_time_in_ms(void);
 //////////////////////		ROUTINE 				////////////////////////////
 void				*routine(void *arg);
 //////////////////////		MESSAGES 				////////////////////////////
-void				print_message(t_philo_thread *p, char *msg, bool is_dead, bool is_eat);
+void				print_msg(t_philo_thread *p, char *msg,
+						bool is_dead, bool is_eat);
 bool				everyone_has_eaten(t_philo_thread *p);
 //////////////////////		INIT	 				////////////////////////////
 bool				init_table(t_table *table);
 bool				init_mutex(t_table *table);
 //////////////////////		MUTEX	 				////////////////////////////
 bool				no_death_detected(t_philo_thread *p);
-bool 				assign_bool_mutex(bool *var, pthread_mutex_t *m, bool value);
+bool				assign_bool_mutex(bool *var, pthread_mutex_t *m, bool val);
 
 //////////////////////		DESTROY	 				////////////////////////////
 void				destroy_philo_table(t_table *table);

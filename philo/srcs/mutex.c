@@ -12,15 +12,14 @@
 
 #include "philo.h"
 
-bool	assign_bool_mutex(bool *var, pthread_mutex_t *m, bool value)
+bool	assign_bool_mutex(bool *var, pthread_mutex_t *m, bool val)
 {
-	bool flag;
+	bool	flag;
 
 	flag = true;
-
 	pthread_mutex_lock(m);
-	if (*var != value)
-		*var = value;
+	if (*var != val)
+		*var = val;
 	else
 		flag = false;
 	pthread_mutex_unlock(m);
@@ -29,10 +28,9 @@ bool	assign_bool_mutex(bool *var, pthread_mutex_t *m, bool value)
 
 bool	no_death_detected(t_philo_thread *p)
 {
-	bool flag;
+	bool	flag;
 
 	flag = false;
-
 	pthread_mutex_lock(p->death_mutex);
 	if (*(p->dead_detected) == false)
 		flag = true;
