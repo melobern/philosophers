@@ -32,7 +32,7 @@ static void	assign_philos(t_table *t, int i)
 {
 	t->philos[i].id = i + 1;
 	t->philos[i].meals_eaten = 0;
-	t->philos[i].start_time = &(t->start_time);
+//	t->philos[i].start_time = &(t->start_time);
 	t->philos[i].dead_detected = &(t->dead_detected);
 	t->philos[i].error_detected = &(t->error_detected);
 	t->philos[i].write_mutex = &(t->write_mutex);

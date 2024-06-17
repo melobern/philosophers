@@ -12,30 +12,16 @@
 
 #include "philo.h"
 
-bool	wait_dinner(t_philo_thread *philo, u_int64_t time)
+bool	check_threads(t_philo_thread *philo)
 {
-	u_int64_t	limit_time;
-
-	if (time == 1)
-		return (false);
-	while (1)
+	pthread_mutex_lock(philo->death_mutex);
+	if (*(philo->error_detected) == true)
 	{
-		pthread_mutex_lock(philo->death_mutex);
-		if (*(philo->error_detected) == true)
-		{
-			pthread_mutex_unlock(philo->death_mutex);
-			return (false);
-		}
-		if (*philo->dinner_started == true)
-		{
-			pthread_mutex_unlock(philo->death_mutex);
-			return (true);
-		}
 		pthread_mutex_unlock(philo->death_mutex);
-		limit_time = get_time_in_ms();
-		if (time + 100 < limit_time || limit_time == 1)
-			return (false);
+		return (false);
 	}
+	pthread_mutex_unlock(philo->death_mutex);
+	return (true);
 }
 
 void	eating_phase(t_philo_thread **p)
@@ -117,13 +103,25 @@ void	*routine(void *arg)
 {
 	t_philo_thread	*p;
 
-	if (!arg || !wait_dinner((t_philo_thread *)arg, get_time_in_ms()))
+	if (!arg)
 		return (NULL);
 	p = (t_philo_thread *)arg;
-	p->last_meal = get_time_in_ms();
+	if (!arg || !check_threads((t_philo_thread *) arg))
+		return (NULL);
+	pthread_mutex_lock(p->death_mutex);
+	if (*p->dinner_started == false)
+	{
+		p->table->start_time = get_time_in_ms();
+		*p->dinner_started = true;
+	}
+	pthread_mutex_unlock(p->death_mutex);
+	p->start_time = p->table->start_time;
+	p->last_meal = p->table->start_time;
 	if (p->id % 2 == 0)
 		ft_usleep(p->eat_time * 0.1, p);
-	while (no_death_detected(&(*p)))
+//	dprintf(2, "philo id == %d\n", p->id);
+
+	while (no_death_detected(&(*p)) && check_threads(p))
 	{
 		if (p->meals_defined == false || p->meals_eaten < p->meals_num)
 		{
