@@ -120,7 +120,7 @@ void	*routine(void *arg)
 	if (!arg || !wait_dinner((t_philo_thread *)arg, get_time_in_ms()))
 		return (NULL);
 	p = (t_philo_thread *)arg;
-	p->last_meal = *p->start_time;
+	p->last_meal = get_time_in_ms();
 	if (p->id % 2 == 0)
 		ft_usleep(p->eat_time / 10);
 	while (no_death_detected(&(*p)))
