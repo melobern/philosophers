@@ -37,12 +37,17 @@ u_int64_t	get_time_in_ms(void)
 	return ((tv.tv_sec * (u_int64_t)1000) + (tv.tv_usec / 1000));
 }
 
-int	ft_usleep(useconds_t time)
+int	ft_usleep(useconds_t time, t_philo_thread *p)
 {
 	u_int64_t	start;
 
 	start = get_time_in_ms();
 	while ((get_time_in_ms() - start) < time)
-		usleep(time / 10);
+	{
+		if (p == NULL || no_death_detected(p))
+			usleep(1500);
+		else
+			break;
+	}
 	return (0);
 }

@@ -51,7 +51,7 @@ int	main(int ac, char **av)
 	if (table.num_of_philos == 1)
 	{
 		printf("0 1 has taken a fork\n");
-		ft_usleep(table.die_time);
+		ft_usleep(table.die_time, NULL);
 		printf("%u 1 died\n", table.die_time + 1);
 		return (0);
 	}
