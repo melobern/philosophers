@@ -28,9 +28,9 @@ void	eating_phase(t_philo_thread **p)
 {
 	print_msg((*p), EAT, 0, 1);
 	(*p)->last_meal = get_time_in_ms();
-	(*p)->meals_eaten++;
 	if ((*p)->meals_defined)
 	{
+		(*p)->meals_eaten++;
 		pthread_mutex_lock((*p)->meals_mutex);
 		if ((*p)->meals_eaten == (*p)->meals_num)
 			(*p)->table->finished_meals++;
@@ -44,14 +44,14 @@ void	eating_phase(t_philo_thread **p)
 	ft_usleep((*p)->eat_time, *p);
 	assign_bool_mutex(&(*p)->l_fork_taken, &(*p)->l_fork, false);
 	assign_bool_mutex((*p)->r_fork_taken, (*p)->r_fork, false);
-	if (everyone_has_eaten((*p)))
-		return ;
+//	if (everyone_has_eaten((*p)))
+//		return ;
 	print_msg((*p), SLEEP, 0, 0);
 	ft_usleep((*p)->sleep_time, *p);
-	if (everyone_has_eaten((*p)))
-		return ;
+//	if (everyone_has_eaten((*p)))
+//		return ;
 	print_msg((*p), THINK, 0, 0);
-	ft_usleep(10, *p);
+//	ft_usleep(1, *p);
 }
 
 void	eat_left(t_philo_thread **p)
@@ -119,7 +119,7 @@ void	*routine(void *arg)
 	p->start_time = p->table->start_time;
 	p->last_meal = p->table->start_time;
 	if (p->id % 2 == 0)
-		ft_usleep(p->eat_time * 0.5, p);
+		ft_usleep((useconds_t)(p->eat_time * 0.5), p);
 //	dprintf(2, "philo id == %d\n", p->id);
 	while (no_death_detected(&(*p)) && check_threads(p))
 	{
@@ -132,7 +132,7 @@ void	*routine(void *arg)
 		}
 		if (p->meals_defined && p->meals_eaten == p->meals_num)
 			break ;
-		ft_usleep(30, p);
+//		ft_usleep(10, p);
 	}
 	return (NULL);
 }

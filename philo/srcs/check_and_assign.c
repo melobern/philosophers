@@ -74,17 +74,17 @@ static bool	check_philos_number(t_table *t, int num_of_philos)
 		&& (t->meals_defined == 0 || t->meals_num > 0))
 		return (true);
 	if (num_of_philos > 200)
-		write(2, PHILO_200_ERROR, 56);
+		write(2, PHILO_200_ERROR, 67);
 	else if (num_of_philos == 0)
-		write(2, "Error: number of philosophers should be superior to 0\n", 54);
+		write(2,PHILO_0_ERROR, 65);
 	if (t->die_time < 60)
-		write(2, "Error: time to die should be superior to 59\n", 44);
+		write(2, TIME_TO_DIE_ERROR, 55);
 	if (t->eat_time < 60)
-		write(2, "Error: time to eat should be superior to 59\n", 44);
+		write(2, TIME_TO_EAT_ERROR, 55);
 	if (t->sleep_time < 60)
-		write(2, "Error: time to sleep should be superior to 59\n", 46);
+		write(2, TIME_TO_SLEEP_ERROR, 57);
 	if (t->meals_defined && t->meals_num == 0)
-		write(2, "Error: number of meals should be superior to 0\n", 47);
+		write(2, NUMBER_OF_MEALS_ERROR, 58);
 	return (false);
 }
 

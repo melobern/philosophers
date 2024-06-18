@@ -47,7 +47,7 @@ int	ft_usleep(useconds_t time, t_philo_thread *p)
 		if (p == NULL || no_death_detected(p))
 			usleep(1500);
 		else
-			break;
+			break ;
 	}
 	return (0);
 }

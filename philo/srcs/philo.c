@@ -43,16 +43,16 @@ int	main(int ac, char **av)
 
 	if (ac < 5 || ac > 6)
 	{
-		write(2, WRONG_NUMBER_OF_ARGUMENTS, 180);
+		write(2, WRONG_NUMBER_OF_ARGUMENTS, 201);
 		return (1);
 	}
 	if (check_arguments_and_assign(av, &table) == false)
 		return (1);
 	if (table.num_of_philos == 1)
 	{
-		printf("0 1 has taken a fork\n");
+		printf("\e[0;35m0\t1\thas taken a fork\e[0m\n");
 		ft_usleep(table.die_time, NULL);
-		printf("%u 1 died\n", table.die_time + 1);
+		printf("\e[0;31m%u\t1\tdied\e[0m\n", table.die_time + 1);
 		return (0);
 	}
 	if (init_table(&table) == false)

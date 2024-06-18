@@ -44,8 +44,9 @@ void	print_msg(t_philo_thread *p, char *msg, bool is_dead, bool is_eat)
 	(void)is_eat;
 //	if (is_eat)
 //		ft_usleep(1, p);
+//	ft_usleep(1, NULL);
 	if (is_dead)
-		ft_usleep(2, NULL);
+		ft_usleep(3, NULL);
 	if (everyone_has_eaten(p))
 		return ;
 	pthread_mutex_lock(p->write_mutex);
