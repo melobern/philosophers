@@ -23,37 +23,62 @@
 # include <sys/types.h>
 # include <unistd.h>
 
-# ifndef PHILO_200_ERROR
-#  define PHILO_200_ERROR \
-	"Error: number of philosophers should be inferior to 200\n"
-# endif
-
 # ifndef WRONG_NUMBER_OF_ARGUMENTS
 #  define WRONG_NUMBER_OF_ARGUMENTS \
-	"Error: wrong number of arguments\n\
-Correct format should contains 5 or 6 arguments :\n\
+	"\e[1;31mError: wrong number of arguments\e[0m\n\
+\e[0;32mCorrect format should contains 5 or 6 arguments :\e[0m\n\
 number_of_philosophers\tdie_time\teat_time\tsleep_time\t\
 [number_of_times_each_philosopher_must_eat]\n"
 # endif
 
+# ifndef PHILO_200_ERROR
+#  define PHILO_200_ERROR \
+	"\e[1;31mError: number of philosophers should be inferior to 200\e[0m\n"
+# endif
+
+# ifndef PHILO_0_ERROR
+#  define PHILO_0_ERROR \
+	"\e[1;31mError: number of philosophers should be superior to 0\e[0m\n"
+# endif
+
+# ifndef TIME_TO_DIE_ERROR
+#  define TIME_TO_DIE_ERROR \
+	"\e[1;31mError: time to die should be superior to 59\e[0m\n"
+# endif
+
+# ifndef TIME_TO_EAT_ERROR
+#  define TIME_TO_EAT_ERROR \
+	"\e[1;31mError: time to eat should be superior to 59\e[0m\n"
+# endif
+
+# ifndef TIME_TO_SLEEP_ERROR
+#  define TIME_TO_SLEEP_ERROR \
+	"\e[1;31mError: time to sleep should be superior to 59\e[0m\n"
+# endif
+
+# ifndef NUMBER_OF_MEALS_ERROR
+#  define NUMBER_OF_MEALS_ERROR \
+	"\e[1;31mError: number of meals should be superior to 0\e[0m\n"
+# endif
+
 # ifndef FORK
-#  define FORK " has taken a fork\n"
+#  define FORK "\e[0;35m has taken a fork\e[0m\n"
 # endif
 
 # ifndef EAT
-#  define EAT " is eating\n"
+#  define EAT "\e[0;32m is eating\e[0m\n"
 # endif
 
 # ifndef THINK
-#  define THINK " is thinking\n"
+#  define THINK "\e[0;33m is thinking\e[0m\n"
 # endif
 
 # ifndef SLEEP
-#  define SLEEP " is sleeping\n"
+#  define SLEEP "\e[0;36m is sleeping\e[0m\n"
 # endif
 
 # ifndef DIED
-#  define DIED " died\n"
+#  define DIED "\e[0;31m died\e[0m\n"
 # endif
 
 typedef struct s_table	t_table;
