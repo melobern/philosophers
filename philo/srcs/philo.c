@@ -31,10 +31,10 @@ static void	launch_diner(t_table *table)
 		table->philos[i].thread_created = true;
 		i++;
 	}
-//	pthread_mutex_lock(&table->death_mutex);
-//	table->dinner_started = true;
-////	table->start_time = get_time_in_ms();
-//	pthread_mutex_unlock(&table->death_mutex);
+	pthread_mutex_lock(&table->meals_mutex);
+	table->dinner_started = true;
+	table->start_time = get_time_in_ms();
+	pthread_mutex_unlock(&table->meals_mutex);
 }
 
 int	main(int ac, char **av)
