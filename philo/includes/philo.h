@@ -119,6 +119,7 @@ typedef struct s_table
 	bool			dead_detected;
 	bool			dinner_started;
 	bool			error_detected;
+	bool			mutex_created;
 	int				num_of_philos;
 	int				finished_meals;
 	int				die_time;

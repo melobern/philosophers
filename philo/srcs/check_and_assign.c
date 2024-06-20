@@ -76,7 +76,7 @@ static bool	check_philos_number(t_table *t, int num_of_philos)
 	if (num_of_philos > 200)
 		write(2, PHILO_200_ERROR, 67);
 	else if (num_of_philos == 0)
-		write(2,PHILO_0_ERROR, 65);
+		write(2, PHILO_0_ERROR, 65);
 	if (t->die_time < 60)
 		write(2, TIME_TO_DIE_ERROR, 55);
 	if (t->eat_time < 60)
