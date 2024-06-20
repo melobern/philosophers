@@ -36,6 +36,7 @@ bool	no_death_detected(t_philo_thread *p)
 	pthread_mutex_lock(p->death_mutex);
 	if (*(p->dead_detected) == false)
 		flag = true;
+//	printf("HELLOOOOOO ==== %d\n", flag);
 	pthread_mutex_unlock(p->death_mutex);
 	return (flag);
 }
