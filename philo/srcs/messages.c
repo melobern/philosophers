@@ -32,25 +32,30 @@ void	print_msg(t_philo_thread *p, char *msg, bool is_dead, bool is_eat)
 	u_int64_t	time;
 
 	time = get_time_in_ms();
-	pthread_mutex_lock(p->death_mutex);
-	if (*(p->dead_detected) == true)
+	if (!is_dead)
 	{
+		pthread_mutex_lock(p->death_mutex);
+		if (*(p->dead_detected) == true)
+		{
+			pthread_mutex_unlock(p->death_mutex);
+			return;
+		}
 		pthread_mutex_unlock(p->death_mutex);
-		return ;
 	}
-	if (is_dead)
-		*(p->dead_detected) = true;
-	pthread_mutex_unlock(p->death_mutex);
 	(void)is_eat;
-//	if (is_eat)
-//		ft_usleep(1, p);
+	if (is_eat)
+		ft_usleep(1, NULL);
 //	ft_usleep(1, NULL);
 	if (is_dead)
 		ft_usleep(3, NULL);
-	if (everyone_has_eaten(p))
-		return ;
-	pthread_mutex_lock(p->write_mutex);
-	if (is_dead || no_death_detected(p))
+//	if (!is_dead && everyone_has_eaten(p))
+//		return ;
+//	ft_usleep(1000, p);
+	if (is_dead || (!everyone_has_eaten(p) && no_death_detected(p)))
+	{
+		pthread_mutex_lock(p->write_mutex);
 		printf("%lu\t%d\t%s", time - p->start_time, p->id, msg);
-	pthread_mutex_unlock(p->write_mutex);
+		pthread_mutex_unlock(p->write_mutex);
+	}
+//	p->start_time += 1000;
 }
