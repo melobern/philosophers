@@ -48,4 +48,6 @@ void	print_msg(t_philo_thread *p, char *msg, bool is_dead, bool is_eat)
 	if (is_dead || no_death_detected(p))
 		printf("%lu\t%d\t%s", get_time_in_ms() - p->start_time, p->id, msg);
 	pthread_mutex_unlock(p->write_mutex);
+	if (is_eat)
+		p->last_meal = get_time_in_ms();
 }
