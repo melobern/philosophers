@@ -32,7 +32,6 @@ static void	assign_philos(t_table *t, int i)
 {
 	t->philos[i].id = i + 1;
 	t->philos[i].meals_eaten = 0;
-//	t->philos[i].start_time = &(t->start_time);
 	t->philos[i].dead_detected = &(t->dead_detected);
 	t->philos[i].error_detected = &(t->error_detected);
 	t->philos[i].write_mutex = &(t->write_mutex);
@@ -59,6 +58,7 @@ bool	init_table(t_table *table)
 	table->dead_detected = false;
 	table->dinner_started = false;
 	table->error_detected = false;
+	table->mutex_created = false;
 	table->finished_meals = 0;
 	table->philos = ft_calloc(table->num_of_philos, sizeof(t_philo_thread));
 	if (!table->philos)
@@ -72,53 +72,4 @@ bool	init_table(t_table *table)
 		i++;
 	}
 	return (true);
-}
-
-static bool	init_left_fork_mutex(t_table *table)
-{
-	int	i;
-
-	i = 0;
-	while (i < table->num_of_philos)
-	{
-		if (pthread_mutex_init(&(table->philos[i].l_fork), NULL))
-		{
-			write(2, "Error: pthread_mutex_init of fork_mutex failed\n", 47);
-//			pthread_mutex_destroy(table->philos[i].death_mutex);
-//			pthread_mutex_destroy(table->philos[i].meals_mutex);
-			table->philos[i].mutex_created = false;
-			return (false);
-		}
-		table->philos[i].mutex_created = true;
-		i++;
-	}
-	return (true);
-}
-
-bool	init_mutex(t_table *table)
-{
-	bool	result;
-
-	if (pthread_mutex_init(&(table->write_mutex), NULL))
-	{
-		write(2, "Error: pthread_mutex_init of write_mutex failed\n", 48);
-		return (false);
-	}
-	if (pthread_mutex_init(&(table->death_mutex), NULL))
-	{
-		write(2, "Error: pthread_mutex_init of write_mutex failed\n", 48);
-		return (false);
-	}
-	if (pthread_mutex_init(&(table->meals_mutex), NULL))
-	{
-		write(2, "Error: pthread_mutex_init of meals_mutex failed\n", 48);
-		return (false);
-	}
-	if (pthread_mutex_init(&(table->errors_mutex), NULL))
-	{
-		write(2, "Error: pthread_mutex_init of errors_mutex failed\n", 49);
-		return (false);
-	}
-	result = init_left_fork_mutex(table);
-	return (result);
 }

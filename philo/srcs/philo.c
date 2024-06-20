@@ -30,7 +30,9 @@ static void	launch_diner(t_table *table)
 		}
 		table->philos[i].thread_created = true;
 		i++;
+		usleep(1000);
 	}
+	usleep(1000);
 	pthread_mutex_lock(&table->meals_mutex);
 	table->dinner_started = true;
 	table->start_time = get_time_in_ms();

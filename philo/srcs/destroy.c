@@ -6,7 +6,7 @@
 /*   By: mbernard <mbernard@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 08:40:29 by mbernard          #+#    #+#             */
-/*   Updated: 2024/06/07 08:40:29 by mbernard         ###   ########.fr       */
+/*   Updated: 2024/06/20 09:53:41 by mbernard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,18 @@ void	destroy_philo_table(t_table *table)
 
 	i = 0;
 	destroy_threads(table);
-	while (i < table->num_of_philos && table->philos[i].mutex_created)
+	if (table->mutex_created)
 	{
-		pthread_mutex_destroy(&(table->philos[i].l_fork));
-		i++;
+		while (i < table->num_of_philos && table->philos[i].mutex_created)
+		{
+			pthread_mutex_destroy(&(table->philos[i].l_fork));
+			i++;
+		}
+		pthread_mutex_destroy(&(table->write_mutex));
+		pthread_mutex_destroy(&(table->death_mutex));
+		pthread_mutex_destroy(&(table->meals_mutex));
+		pthread_mutex_destroy(&(table->errors_mutex));
 	}
-	pthread_mutex_destroy(&(table->write_mutex));
-	pthread_mutex_destroy(&(table->death_mutex));
-	pthread_mutex_destroy(&(table->meals_mutex));
-	pthread_mutex_destroy(&(table->errors_mutex));
 	free(table->philos);
 	table->philos = NULL;
 }

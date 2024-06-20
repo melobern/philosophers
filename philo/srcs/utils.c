@@ -42,10 +42,11 @@ int	ft_usleep(useconds_t time, t_philo_thread *p)
 	u_int64_t	start;
 
 	start = get_time_in_ms();
+	usleep(1000);
 	while ((get_time_in_ms() - start) < time)
 	{
 		if (p == NULL || no_death_detected(p))
-			usleep(1500);
+			usleep(500);
 		else
 			break ;
 	}
