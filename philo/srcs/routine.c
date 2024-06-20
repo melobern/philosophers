@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-bool	check_threads(t_philo_thread **p)
+static bool	check_threads(t_philo_thread **p)
 {
 	while (1)
 	{
@@ -33,11 +33,10 @@ bool	check_threads(t_philo_thread **p)
 	}
 }
 
-void	eating_phase(t_philo_thread **p)
+static void	eating_phase(t_philo_thread **p)
 {
 	(*p)->last_meal = get_time_in_ms();
 	print_msg((*p), EAT, 0, 1);
-	(*p)->last_meal = get_time_in_ms();
 	if ((*p)->meals_defined)
 	{
 		(*p)->meals_eaten++;
@@ -60,9 +59,10 @@ void	eating_phase(t_philo_thread **p)
 	ft_usleep((*p)->sleep_time, *p);
 	if (!everyone_has_eaten((*p)))
 		print_msg((*p), THINK, 0, 0);
+	usleep(1000);
 }
 
-void	eat_left(t_philo_thread **p)
+static void	eat_left(t_philo_thread **p)
 {
 	bool	fork_is_free;
 
@@ -85,7 +85,7 @@ void	eat_left(t_philo_thread **p)
 	}
 }
 
-void	eat_right(t_philo_thread **p)
+static void	eat_right(t_philo_thread **p)
 {
 	bool	fork_is_free;
 
