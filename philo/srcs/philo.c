@@ -50,13 +50,6 @@ int	main(int ac, char **av)
 	}
 	if (check_arguments_and_assign(av, &table) == false)
 		return (1);
-	if (table.num_of_philos == 1)
-	{
-		printf("\e[0;35m0\t1\thas taken a fork\e[0m\n");
-		ft_usleep(table.die_time, NULL);
-		printf("\e[0;31m%u\t1\tdied\e[0m\n", table.die_time + 1);
-		return (0);
-	}
 	if (init_table(&table) == false)
 		return (1);
 	if (init_mutex(&table))

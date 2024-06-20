@@ -12,38 +12,21 @@
 
 #include "philo.h"
 
-bool	check_threads(t_philo_thread *p)
+bool	check_threads(t_philo_thread *philo)
 {
-	pthread_mutex_lock(p->errors_mutex);
-	if (*(p->error_detected) == true)
+	pthread_mutex_lock(philo->errors_mutex);
+	if (*(philo->error_detected) == true)
 	{
-		pthread_mutex_unlock(p->errors_mutex);
+		pthread_mutex_unlock(philo->errors_mutex);
 		return (false);
 	}
-	pthread_mutex_unlock(p->errors_mutex);
-	while (1)
-	{
-		pthread_mutex_lock(p->meals_mutex);
-		if (*p->dinner_started == true)
-		{
-			p->start_time = p->table->start_time;
-			pthread_mutex_unlock(p->meals_mutex);
-			p->last_meal = p->start_time;
-			return (true);
-		}
-		if (*p->error_detected == true)
-		{
-			pthread_mutex_unlock(p->meals_mutex);
-			return (NULL);
-		}
-		pthread_mutex_unlock(p->meals_mutex);
-		ft_usleep(1, NULL);
-	}
+	pthread_mutex_unlock(philo->errors_mutex);
 	return (true);
 }
 
 void	eating_phase(t_philo_thread **p)
 {
+	(*p)->last_meal = get_time_in_ms();
 	print_msg((*p), EAT, 0, 1);
 	(*p)->last_meal = get_time_in_ms();
 	if ((*p)->meals_defined)
@@ -66,10 +49,10 @@ void	eating_phase(t_philo_thread **p)
 		return ;
 	print_msg((*p), SLEEP, 0, 0);
 	ft_usleep((*p)->sleep_time, *p);
-	if (everyone_has_eaten((*p)))
-		return ;
+//	if (everyone_has_eaten((*p)))
+//		return ;
 	print_msg((*p), THINK, 0, 0);
-	ft_usleep(1, *p);
+//	ft_usleep(1, *p);
 }
 
 void	eat_left(t_philo_thread **p)
@@ -113,6 +96,7 @@ void	eat_right(t_philo_thread **p)
 	}
 	if ((*p)->num_forks == 2)
 	{
+//		(*p)->last_meal = get_time_in_ms();
 		eating_phase(p);
 		(*p)->num_forks = 0;
 	}
@@ -127,27 +111,27 @@ void	*routine(void *arg)
 	p = (t_philo_thread *)arg;
 	if (!check_threads((t_philo_thread *) arg))
 		return (NULL);
-//	while (1)
-//	{
-//		pthread_mutex_lock(p->meals_mutex);
-//		if (*p->dinner_started == true)
-//		{
-//			p->start_time = p->table->start_time;
-//			pthread_mutex_unlock(p->meals_mutex);
-//			p->last_meal = p->start_time;
-//			break ;
-//		}
-//		if (*p->error_detected == true)
-//		{
-//			pthread_mutex_unlock(p->meals_mutex);
-//			return (NULL);
-//		}
-//		pthread_mutex_unlock(p->meals_mutex);
-//		ft_usleep(1, NULL);
-//	}
+	while (1)
+	{
+		pthread_mutex_lock(p->meals_mutex);
+		if (*p->dinner_started == true)
+		{
+			p->start_time = p->table->start_time;
+			pthread_mutex_unlock(p->meals_mutex);
+			p->last_meal = p->start_time;
+			break ;
+		}
+		if (*p->error_detected == true)
+		{
+			pthread_mutex_unlock(p->meals_mutex);
+			return (NULL);
+		}
+		pthread_mutex_unlock(p->meals_mutex);
+		ft_usleep(1, NULL);
+	}
 	if (p->id % 2 == 0)
-		ft_usleep((useconds_t)(p->eat_time * 0.1), p);
-	while (no_death_detected(&(*p)))
+		ft_usleep((useconds_t)(p->eat_time * 0.5), p);
+	while (no_death_detected(&(*p)) && check_threads(p))
 	{
 		if (p->meals_defined == false || p->meals_eaten < p->meals_num)
 		{
@@ -158,7 +142,6 @@ void	*routine(void *arg)
 		}
 		if (p->meals_defined && p->meals_eaten == p->meals_num)
 			break ;
-//		ft_usleep(10, p);
 	}
 	return (NULL);
 }
