@@ -148,9 +148,9 @@ void				print_msg(t_philo_thread *p, char *msg,
 bool				everyone_has_eaten(t_philo_thread *p);
 //////////////////////		INIT	 				////////////////////////////
 bool				init_table(t_table *table);
+bool				init_mutex(t_table *table);
 //////////////////////		MUTEX	 				////////////////////////////
 bool				no_death_detected(t_philo_thread *p);
-bool				init_mutex(t_table *t);
 bool				assign_bool_mutex(bool *var, pthread_mutex_t *m, bool val);
 
 //////////////////////		DESTROY	 				////////////////////////////
