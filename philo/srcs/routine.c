@@ -53,13 +53,12 @@ static void	eating_phase(t_philo_thread **p)
 	ft_usleep((*p)->eat_time, *p);
 	assign_bool_mutex(&(*p)->l_fork_taken, &(*p)->l_fork, false);
 	assign_bool_mutex((*p)->r_fork_taken, (*p)->r_fork, false);
-	if (everyone_has_eaten((*p)))
+	if ((*p)->meals_defined && everyone_has_eaten((*p)))
 		return ;
 	print_msg((*p), SLEEP, 0, 0);
 	ft_usleep((*p)->sleep_time, *p);
-	if (!everyone_has_eaten((*p)))
+	if (!(*p)->meals_defined && !everyone_has_eaten((*p)))
 		print_msg((*p), THINK, 0, 0);
-	usleep(1000);
 }
 
 static void	eat_left(t_philo_thread **p)
