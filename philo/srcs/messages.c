@@ -38,7 +38,7 @@ void	print_msg(t_philo_thread *p, char *msg, bool is_dead, bool is_eat)
 	if (is_dead)
 		*(p->dead_detected) = true;
 	pthread_mutex_unlock(p->death_mutex);
-	if (is_eat && p->meals_defined && p->meals_eaten == p->meals_num - 1)
+	if (p->meals_defined && is_eat && p->meals_eaten == p->meals_num - 1)
 		usleep(1000);
 	if (is_dead)
 		ft_usleep(3, NULL);
