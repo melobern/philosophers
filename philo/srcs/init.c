@@ -63,7 +63,7 @@ bool	init_table(t_table *table)
 	table->philos = ft_calloc(table->num_of_philos, sizeof(t_philo_thread));
 	if (!table->philos)
 	{
-		write(2, "Error: malloc failed at init_table\n", 41);
+		write(2, "Error: malloc failed at init_table\n", 35);
 		return (false);
 	}
 	while (i < table->num_of_philos)
